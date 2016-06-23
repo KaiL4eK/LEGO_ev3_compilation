@@ -14,6 +14,6 @@ http://www.cnx-software.com/2011/03/28/installing-linaro-arm-cross-toolchain-on-
 
 ### With this compiler tested next libraries: ###
 EV3c:
-https://github.com/theZiz/ev3c #
+https://github.com/theZiz/ev3c  
 ev3dev-c:
 https://github.com/in4lio/ev3dev-c - no coroutine.h file
