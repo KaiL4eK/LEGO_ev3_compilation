@@ -1,4 +1,4 @@
-**### EV3 Compilation tools ###**
+### **EV3 Compilation tools** ###
 
 # Operation System #
 
