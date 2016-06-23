@@ -12,7 +12,7 @@ http://www.cnx-software.com/2011/03/28/installing-linaro-arm-cross-toolchain-on-
 
 ## Libraries ##
 
-C libraries preferred
+C libraries preferred \n
 With this compiler tested next libraries:
 EV3c:
 https://github.com/theZiz/ev3c
