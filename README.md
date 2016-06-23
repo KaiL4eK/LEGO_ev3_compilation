@@ -10,6 +10,10 @@ http://www.ev3dev.org
 ### Linaro toolchain for Linux (cross compilation): ###
 http://www.cnx-software.com/2011/03/28/installing-linaro-arm-cross-toolchain-on-ubuntu/
 
+### Repositories commands for Linux (cross compilation): ###
+g++-arm-linux-gnueabi  
+gcc-arm-linux-gnueabi
+
 ## Libraries ##
 
 ### With this compiler tested next libraries: ###
