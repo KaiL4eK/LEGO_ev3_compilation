@@ -1,6 +1,6 @@
 {
     "version": 1,
-    "supportedProjectTypes": [ "CMakeProjectManager.CMakeProject", "Qbs.QbsProject", "Qt4ProjectManager.Qt4Project" ],
+    "supportedProjectTypes": [ "CMakeProjectManager.CMakeProject" ],
     "id": "R.EV3 application",
     "category": "I.Projects",
     "trDescription": "Creates a simple LEGO EV3 application.",
@@ -8,14 +8,14 @@
     "trDisplayCategory": "Non-Qt Project",
     "icon": "../../global/consoleapplication.png",
     "enabled": "%{JS: [ %{Plugins} ].indexOf('CMakeProjectManager') >= 0}",
-
+    
     "options":
     [
-        { "key": "ProjectFile", "value": "%{JS: '%{BuildSystem}' === 'qmake' ? '%{ProFile}' : ('%{BuildSystem}' === 'cmake' ? '%{CMakeFile}' : '%{QbsFile}')}" },
+        { "key": "ProjectFile", "value": "%{CMakeFile}" },
         { "key": "ProFile", "value": "%{JS: Util.fileName('%{ProjectDirectory}/%{ProjectName}', 'pro')}" },
         { "key": "QbsFile", "value": "%{JS: Util.fileName('%{ProjectDirectory}/%{ProjectName}', 'qbs')}" },
         { "key": "CMakeFile", "value": "%{ProjectDirectory}/CMakeLists.txt" },
-        { "key": "CppFileName", "value": "%{JS: 'main.' + Util.preferredSuffix('text/x-c++src')}" },
+        { "key": "CFileName", "value": "%{JS: 'main.' + Util.preferredSuffix('text/x-csrc')}" },
         { "key": "IsTopLevelProject", "value": "%{JS: !'%{Exists:ProjectExplorer.Profile.Ids}'}" }
     ],
 
@@ -51,7 +51,7 @@
                 }
             ]
         },
-        
+
         {
             "trDisplayName": "Kit Selection",
             "trShortTitle": "Kits",
@@ -72,15 +72,27 @@
             "data":
             [
                 {
+                    "source": "file.pro",
+                    "target": "%{ProFile}",
+                    "openAsProject": true,
+                    "condition": "%{JS: '%{BuildSystem}' === 'qmake'}"
+                },
+                {
                     "source": "CMakeLists.txt",
                     "openAsProject": true,
                     "condition": "%{JS: '%{BuildSystem}' === 'cmake'}"
                 },
                 {
+                    "source": "file.qbs",
+                    "target": "%{QbsFile}",
+                    "openAsProject": true,
+                    "condition": "%{JS: '%{BuildSystem}' === 'qbs'}"
+                },
+                {
                     "source": "main.c",
+                    "target": "%{CFileName}",
                     "openInEditor": true
                 },
-
                 {
                     "source": "../git.ignore",
                     "target": "%{ProjectDirectory}/.gitignore",
