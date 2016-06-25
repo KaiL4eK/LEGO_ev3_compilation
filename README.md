@@ -11,7 +11,7 @@ http://www.ev3dev.org
 http://www.cnx-software.com/2011/03/28/installing-linaro-arm-cross-toolchain-on-ubuntu/
 
 ### Packages for Linux (cross compilation): ###
-g++-arm-linux-gnueabi  
+cmake 
 gcc-arm-linux-gnueabi
 
 ## Libraries ##
@@ -33,5 +33,4 @@ $(QT_DIR)/Tools/QtCreator/share/qtcreator/QtProject
 
 
 ## Setup Qt ##
-/home/<username>/Qt  
-
+/home/<username>/Qt
