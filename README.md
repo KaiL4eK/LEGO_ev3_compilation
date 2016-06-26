@@ -25,12 +25,6 @@ CFLAGS += -std=gnu++0x
 CFLAGS (for library) += -D_GLIBCXX_USE_NANOSLEEP  
 + export CC and CXX paths before cmake
 
-## Project Template ##
-ev3_dev --> 
-$(QT_DIR)/Tools/QtCreator/share/qtcreator/templates/wizard/projects
-qtcreator --> 
-$(QT_DIR)/Tools/QtCreator/share/qtcreator/QtProject
-
 
 ## Setup Qt ##
 /home/<username>/Qt
