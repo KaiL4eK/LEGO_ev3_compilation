@@ -25,6 +25,5 @@ CFLAGS += -std=gnu++0x
 CFLAGS (for library) += -D_GLIBCXX_USE_NANOSLEEP  
 + export CC and CXX paths before cmake
 
-
-## Setup Qt ##
-/home/<username>/Qt
+## Other data ##
+https://www.dropbox.com/sh/3q4xj48iel743ug/AABwnclCVfoXYJmuWXDcKfgma?dl=0
