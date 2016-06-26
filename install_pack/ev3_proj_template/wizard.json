@@ -1,0 +1,62 @@
+{
+    "version": 1,
+    "supportedProjectTypes": [ "CMakeProjectManager.CMakeProject" ],
+    "id": "R.EV3 application",
+    "category": "I.Projects",
+    "trDescription": "Creates a simple LEGO EV3 application.",
+    "trDisplayName": "EV3 Application",
+    "trDisplayCategory": "Non-Qt Project",
+    "icon": "../../global/consoleapplication.png",
+    "enabled": "%{JS: [ %{Plugins} ].indexOf('CMakeProjectManager') >= 0}",
+    
+    "options":
+    [
+        { "key": "ProjectFile", "value": "%{CMakeFile}" },
+        { "key": "CMakeFile", "value": "%{ProjectDirectory}/CMakeLists.txt" },
+        { "key": "CFileName", "value": "%{JS: 'main.' + Util.preferredSuffix('text/x-csrc')}" }
+    ],
+
+    "pages":
+    [
+        {
+            "trDisplayName": "Project Location",
+            "trShortTitle": "Location",
+            "typeId": "Project"
+        },
+
+        {
+            "trDisplayName": "Kit Selection",
+            "trShortTitle": "Kits",
+            "typeId": "Kits",
+            "data": { "projectFilePath": "%{ProjectFile}" }
+        },
+        {
+            "trDisplayName": "Project Management",
+            "trShortTitle": "Summary",
+            "typeId": "Summary"
+        }
+    ],
+    "generators":
+    [
+        {
+            "typeId": "File",
+            "data":
+            [
+                {
+                    "source": "CMakeLists.txt",
+                    "openAsProject": true
+                },
+                {
+                    "source": "main.c",
+                    "target": "%{CFileName}",
+                    "openInEditor": true
+                },
+                {
+                    "source": "../git.ignore",
+                    "target": "%{ProjectDirectory}/.gitignore",
+                    "condition": "%{JS: ! %{IsSubproject} && '%{VersionControl}' === 'G.Git'}"
+                }
+            ]
+        }
+    ]
+}
