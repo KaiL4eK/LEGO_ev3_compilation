@@ -12,6 +12,5 @@ include_directories(${EV3C_DATA_DIRECTORY}/include)
 link_directories(${CROSS_DIRECTORY}/lib)
 link_directories(${EV3C_DATA_DIRECTORY}/lib)
 
-
 add_executable(${PROJECT_NAME} ${SRC_LIST})
 target_link_libraries(${PROJECT_NAME} ev3c)

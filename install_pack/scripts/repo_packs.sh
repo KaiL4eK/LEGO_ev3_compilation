@@ -2,4 +2,4 @@
 
 # install cross-compiler, cmake
 sudo apt-get update && \
-sudo apt-get install gcc-arm-linux-gnueabi cmake -y
+sudo apt-get install gcc-arm-linux-gnueabi cmake libcanberra-gtk-module gtk2-engines-pixbuf -y
