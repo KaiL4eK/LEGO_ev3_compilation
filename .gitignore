@@ -1,6 +1,6 @@
-**bin
-**obj
-**lib
+**/bin
+**/obj
+**/lib
 *.a
 *.run
 *.deb
