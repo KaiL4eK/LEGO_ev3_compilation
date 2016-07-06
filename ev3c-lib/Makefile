@@ -7,6 +7,8 @@ RANLIB := arm-linux-gnueabi-ranlib
 
 RES_LIBRARY := lib/libev3c.a
 
+install_directory := /usr/local/ev3_arm
+
 all: $(RES_LIBRARY) bin/test_sensor bin/test_motor bin/test_lcd bin/test_button bin/test_led bin/test_battery
 
 obj/%.o: src/%.c include/%.h include/ev3c.h Makefile
@@ -46,6 +48,13 @@ documentation: include/*.h
 	naturaldocs -i . -xi ./ev3c_documentation -o HTML ev3c_documentation -p /tmp/ev3DocumentationTemp
 
 .PHONY: all clean
+
+install: all $(install_directory)
+	cp -r include $(install_directory)
+	cp -r lib $(install_directory)
+
+$(install_directory):
+	mkdir -p $@
 
 clean:
 	rm -rf obj lib bin
