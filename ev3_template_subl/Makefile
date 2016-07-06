@@ -1,12 +1,17 @@
+# 
+# Configurable area
+# 
+ip_robot_address := __ip_address
+execute_name := __project_name
 
-build_directory := build
-project_name := test
-execute_file := $(build_directory)/$(project_name)
+execute_file := $(build_directory)/$(execute_name)
 
 objects := $(patsubst %.c,%.o,$(wildcard *.c))
 
-libs_directory := /usr/local/ev3_arm/lib
-include_directory := /usr/local/ev3_arm/include
+ev3_install_directory := /usr/local/ev3_arm
+build_directory := build
+libs_directory := $(ev3_install_directory)/lib
+include_directory := $(ev3_install_directory)/include
 
 cflags := $(addprefix -I, $(include_directory)) -Wall -O3
 ldflags := $(addprefix -L, $(libs_directory))
@@ -29,4 +34,5 @@ clean:
 	rm -rf $(build_directory)
 
 install: all
-	scp $(execute_file) robot@$(ip_robot_address):~/$(project_name)
+	scp $(execute_file) robot@$(ip_robot_address):~/$(execute_name)
+	

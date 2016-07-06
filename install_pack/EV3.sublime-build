@@ -11,12 +11,6 @@
             "shell": true
         },
         {
-            "name": "echo",
-            "working_dir": "${project_path}",
-            "shell_cmd": "echo ${project_path}",
-            "shell": true
-        },
-        {
             "name": "install",
             "working_dir": "${project_path}",
             "shell_cmd": "make install",
