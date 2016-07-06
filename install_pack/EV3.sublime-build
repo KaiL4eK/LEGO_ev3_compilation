@@ -1,0 +1,26 @@
+{
+    "shell_cmd": "make",
+    "selector": "source.c",
+    "working_dir": "${project_path}",
+    "shell": true,
+    "variants": [
+        {
+            "name": "clean",
+            "working_dir": "${project_path}",
+            "shell_cmd": "make clean",
+            "shell": true
+        },
+        {
+            "name": "echo",
+            "working_dir": "${project_path}",
+            "shell_cmd": "echo ${project_path}",
+            "shell": true
+        },
+        {
+            "name": "install",
+            "working_dir": "${project_path}",
+            "shell_cmd": "make install",
+            "shell": true
+        }
+    ]
+}

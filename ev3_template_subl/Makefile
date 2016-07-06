@@ -8,7 +8,7 @@ objects := $(patsubst %.c,%.o,$(wildcard *.c))
 libs_directory := /usr/local/ev3_arm/lib
 include_directory := /usr/local/ev3_arm/include
 
-cflags := $(addprefix -I, $(include_directory)) -Wall 
+cflags := $(addprefix -I, $(include_directory)) -Wall -O3
 ldflags := $(addprefix -L, $(libs_directory))
 
 CC := arm-linux-gnueabi-gcc
