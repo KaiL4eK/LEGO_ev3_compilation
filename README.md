@@ -11,7 +11,6 @@ http://www.ev3dev.org
 http://www.cnx-software.com/2011/03/28/installing-linaro-arm-cross-toolchain-on-ubuntu/
 
 ### Packages for Linux (cross compilation): ###
-cmake 
 gcc-arm-linux-gnueabi
 
 ## Libraries ##
