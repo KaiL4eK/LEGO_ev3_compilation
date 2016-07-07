@@ -1,13 +1,12 @@
-CFLAGS += -O3
-
 CC := arm-linux-gnueabi-gcc
 LD := $(CC)
 AR := arm-linux-gnueabi-ar
-RANLIB := arm-linux-gnueabi-ranlib
 
 RES_LIBRARY := lib/libev3c.a
 
-install_directory := /usr/local/ev3_arm
+install_directory := /usr/local/ev3c
+
+CFLAGS += -O3
 
 all: $(RES_LIBRARY) bin/test_sensor bin/test_motor bin/test_lcd bin/test_button bin/test_led bin/test_battery
 
@@ -17,7 +16,7 @@ obj/%.o: src/%.c include/%.h include/ev3c.h Makefile
 
 $(RES_LIBRARY): obj/ev3c_core.o obj/ev3c_lcd.o obj/ev3c_sensor.o obj/ev3c_motor.o obj/ev3c_button.o obj/ev3c_led.o obj/ev3c_battery.o
 	mkdir -p $(@D)
-	$(AR) rc $@ $^ && $(RANLIB) $@
+	$(AR) rsc $@ $^
 
 bin/test_sensor: src/test_sensor.c $(RES_LIBRARY)
 	mkdir -p $(@D)

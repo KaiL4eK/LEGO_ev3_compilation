@@ -4,20 +4,22 @@
 ip_robot_address := __ip_address
 execute_name := __project_name
 
-execute_file := $(build_directory)/$(execute_name)
-
 objects := $(patsubst %.c,%.o,$(wildcard *.c))
 
-ev3_install_directory := /usr/local/ev3_arm
+cross_compiler_directory := /usr/arm-linux-gnueabi
+ev3_install_directory := /usr/local/ev3c
 build_directory := build
-libs_directory := $(ev3_install_directory)/lib
-include_directory := $(ev3_install_directory)/include
+
+library_directory := $(cross_compiler_directory)/lib $(ev3c_directory)/lib
+include_directory := $(cross_compiler_directory)/include $(ev3c_directory)/include
 
 cflags := $(addprefix -I, $(include_directory)) -Wall -O3
-ldflags := $(addprefix -L, $(libs_directory))
+ldflags := $(addprefix -L, $(library_directory))
 
 CC := arm-linux-gnueabi-gcc
 LD := $(CC)
+
+execute_file := $(build_directory)/$(execute_name)
 
 all: $(build_directory) $(execute_file) 
 	
