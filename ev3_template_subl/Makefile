@@ -7,14 +7,16 @@ execute_name := __project_name
 objects := $(patsubst %.c,%.o,$(wildcard *.c))
 
 cross_compiler_directory := /usr/arm-linux-gnueabi
-ev3_install_directory := /usr/local/ev3c
+ev3c_directory := /usr/local/ev3c
 build_directory := build
 
 library_directory := $(cross_compiler_directory)/lib $(ev3c_directory)/lib
 include_directory := $(cross_compiler_directory)/include $(ev3c_directory)/include
 
+libraries := ev3c ev3cleti stdc++ 
+
 cflags := $(addprefix -I, $(include_directory)) -Wall -O3
-ldflags := $(addprefix -L, $(library_directory))
+ldflags := $(addprefix -L, $(library_directory)) $(addprefix -l, $(libraries))
 
 CC := arm-linux-gnueabi-gcc
 LD := $(CC)

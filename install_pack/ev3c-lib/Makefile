@@ -1,46 +1,42 @@
-CC := arm-linux-gnueabi-gcc
-LD := $(CC)
-AR := arm-linux-gnueabi-ar
+include ../common.mk
 
-RES_LIBRARY := lib/libev3c.a
+library_file := lib/libev3c.a
 
-install_directory := /usr/local/ev3c
+install_directory := $(ev3c_lib_directory)
 
-CFLAGS += -O3
-
-all: $(RES_LIBRARY) bin/test_sensor bin/test_motor bin/test_lcd bin/test_button bin/test_led bin/test_battery
+all: $(library_file) bin/test_sensor bin/test_motor bin/test_lcd bin/test_button bin/test_led bin/test_battery
 
 obj/%.o: src/%.c include/%.h include/ev3c.h Makefile
 	mkdir -p $(@D)
-	$(CC) -c -o $@ $< $(CFLAGS) -Iinclude
+	$(CC) -c -o $@ $< $(cflags) -Iinclude
 
-$(RES_LIBRARY): obj/ev3c_core.o obj/ev3c_lcd.o obj/ev3c_sensor.o obj/ev3c_motor.o obj/ev3c_button.o obj/ev3c_led.o obj/ev3c_battery.o
+$(library_file): obj/ev3c_core.o obj/ev3c_lcd.o obj/ev3c_sensor.o obj/ev3c_motor.o obj/ev3c_button.o obj/ev3c_led.o obj/ev3c_battery.o
 	mkdir -p $(@D)
 	$(AR) rsc $@ $^
 
-bin/test_sensor: src/test_sensor.c $(RES_LIBRARY)
+bin/test_sensor: src/test_sensor.c $(library_file)
 	mkdir -p $(@D)
-	$(CC) -o $@ $< $(RES_LIBRARY) $(CFLAGS) -Iinclude
+	$(CC) -o $@ $< $(library_file) $(cflags) -Iinclude
 
-bin/test_motor: src/test_motor.c $(RES_LIBRARY)
+bin/test_motor: src/test_motor.c $(library_file)
 	mkdir -p $(@D)
-	$(CC) -o $@ $< $(RES_LIBRARY) $(CFLAGS) -Iinclude
+	$(CC) -o $@ $< $(library_file) $(cflags) -Iinclude
 
-bin/test_lcd: src/test_lcd.c $(RES_LIBRARY)
+bin/test_lcd: src/test_lcd.c $(library_file)
 	mkdir -p $(@D)
-	$(CC) -o $@ $< $(RES_LIBRARY) $(CFLAGS) -Iinclude
+	$(CC) -o $@ $< $(library_file) $(cflags) -Iinclude
 
-bin/test_button: src/test_button.c $(RES_LIBRARY)
+bin/test_button: src/test_button.c $(library_file)
 	mkdir -p $(@D)
-	$(CC) -o $@ $< $(RES_LIBRARY) $(CFLAGS) -Iinclude
+	$(CC) -o $@ $< $(library_file) $(cflags) -Iinclude
 
-bin/test_led: src/test_led.c $(RES_LIBRARY)
+bin/test_led: src/test_led.c $(library_file)
 	mkdir -p $(@D)
-	$(CC) -o $@ $< $(RES_LIBRARY) $(CFLAGS) -Iinclude
+	$(CC) -o $@ $< $(library_file) $(cflags) -Iinclude
 
-bin/test_battery: src/test_battery.c $(RES_LIBRARY)
+bin/test_battery: src/test_battery.c $(library_file)
 	mkdir -p $(@D)
-	$(CC) -o $@ $< $(RES_LIBRARY) $(CFLAGS) -Iinclude
+	$(CC) -o $@ $< $(library_file) $(cflags) -Iinclude
 
 documentation: include/*.h
 	mkdir -p /tmp/ev3DocumentationTemp
