@@ -5,70 +5,60 @@
 
 extern "C" {
 
-void Sound_beep(const std::string &args, bool bSynchronous)
+#include <sound.h>
+
+void Sound_beep(const char *args, bool bSynchronous)
 {
   std::ostringstream cmd;
-  cmd << "/usr/bin/beep " << args;
+  cmd << "/usr/bin/beep " << std::string(args);
   if (!bSynchronous) cmd << " &";
   std::system(cmd.str().c_str());
 }
 
 //-----------------------------------------------------------------------------
 
-void Sound_tone_vect(
-    const std::vector< std::vector<float> > &sequence,
-    bool bSynchronous
-    )
+void Sound_tones(Note_t notes[], bool bSynchronous)
 {
-  std::ostringstream args;
-  bool first = true;
+    std::ostringstream args;
+    bool first = true;
 
-  for(auto v : sequence) {
-    if (first) {
-      first = false;
-    } else {
-      args << " -n";
+    for ( int i = 0; ; i++ ) {
+
+        if ( first ) {
+            first = false;
+        } else {
+            args << " -n";
+        }
+
+        args << " -f " << notes[i].frequency << " -l " << notes[i].length << " -D " << notes[i].delay;
+
+        if ( notes[i].delay == 0.0f ) {
+            break;
+        }
     }
-
-    if (v.size() > 0) {
-      args << " -f " << v[0];
-    } else {
-      continue;
-    }
-
-    if (v.size() > 1) {
-      args << " -l " << v[1];
-    } else {
-      continue;
-    }
-
-    if (v.size() > 2) {
-      args << " -D " << v[2];
-    } else {
-      continue;
-    }
-  }
-
-  Sound_beep(args.str(), bSynchronous);
+    Sound_beep(args.str().c_str(), bSynchronous);
 }
 
 //-----------------------------------------------------------------------------
 
 void Sound_tone(float frequency, float ms, bool bSynchronous) {
-  Sound_tone_vect({{frequency, ms, 0.0f}}, bSynchronous);
+    Note_t notes [] = {{frequency, ms, 0.0f}};
+    Sound_tones(notes, bSynchronous);
 }
 
 //-----------------------------------------------------------------------------
 
-void Sound_play(const std::string &soundfile, bool bSynchronous)
+void Sound_play(const char *soundfile, bool bSynchronous)
 {
   std::ostringstream cmd;
-  cmd << "/usr/bin/aplay -q " << soundfile;
+  cmd << "/usr/bin/aplay -q " << std::string(soundfile);
 
   if (!bSynchronous) cmd << " &";
 
   std::system(cmd.str().c_str());
 }
+
+//-----------------------------------------------------------------------------
 
 void Sound_speak (const char *speak_string, bool bSynchronous)
 {
