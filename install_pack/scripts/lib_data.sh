@@ -3,6 +3,7 @@
 DATA_DIR=ev3c-lib
 
 # install lib/ and include/ dirs
+make -C $DATA_DIR
 sudo make install -C $DATA_DIR
 
 # install qt project template
