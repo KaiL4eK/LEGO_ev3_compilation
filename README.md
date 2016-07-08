@@ -11,7 +11,7 @@ http://www.ev3dev.org
 http://www.cnx-software.com/2011/03/28/installing-linaro-arm-cross-toolchain-on-ubuntu/
 
 ### Packages for Linux (cross compilation): ###
-gcc-arm-linux-gnueabi
+gcc-arm-linux-gnueabi g++-arm-linux-gnueabi(for c++ libs)
 
 ## Libraries ##
 
@@ -26,3 +26,6 @@ CFLAGS (for library) += -D_GLIBCXX_USE_NANOSLEEP
 
 ## Other data ##
 https://www.dropbox.com/sh/3q4xj48iel743ug/AABwnclCVfoXYJmuWXDcKfgma?dl=0
+
+## Ready modules ##
+Sound
