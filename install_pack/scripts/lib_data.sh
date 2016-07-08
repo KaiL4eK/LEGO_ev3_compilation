@@ -1,10 +1,14 @@
 #!/bin/bash
 
-DATA_DIR=ev3c-lib
+LIB_DIR_EV3C=ev3c-lib
+LIB_DIR_EV3CLETI=ev3cleti_library
 
 # install lib/ and include/ dirs
-make -C $DATA_DIR
-sudo make install -C $DATA_DIR
+make -C $LIB_DIR_EV3C
+sudo make install -C $LIB_DIR_EV3C
+
+make -C $LIB_DIR_EV3CLETI
+sudo make install -C $LIB_DIR_EV3CLETI
 
 # install qt project template
 # EV3_TEMPLATE=ev3_proj_template

@@ -8,10 +8,11 @@ objects := $(patsubst %.c,%.o,$(wildcard *.c))
 
 cross_compiler_directory := /usr/arm-linux-gnueabi
 ev3c_directory := /usr/local/ev3c
+ev3cleti_lib_directory = /usr/local/ev3cleti
 build_directory := build
 
-library_directory := $(cross_compiler_directory)/lib $(ev3c_directory)/lib
-include_directory := $(cross_compiler_directory)/include $(ev3c_directory)/include
+library_directory := $(cross_compiler_directory)/lib $(ev3c_directory)/lib $(ev3cleti_lib_directory)/lib
+include_directory := $(cross_compiler_directory)/include $(ev3c_directory)/include $(ev3cleti_lib_directory)/include
 
 libraries := ev3c ev3cleti stdc++ 
 

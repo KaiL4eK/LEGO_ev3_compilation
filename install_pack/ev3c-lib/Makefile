@@ -1,8 +1,8 @@
 include ../common.mk
 
-library_file := lib/libev3c.a
+library_file = lib/libev3c.a
 
-install_directory := $(ev3c_lib_directory)
+install_directory = $(ev3c_lib_directory)
 
 all: $(library_file) bin/test_sensor bin/test_motor bin/test_lcd bin/test_button bin/test_led bin/test_battery
 
