@@ -26,6 +26,3 @@ CFLAGS (for library) += -D_GLIBCXX_USE_NANOSLEEP
 
 ## Other data ##
 https://www.dropbox.com/sh/3q4xj48iel743ug/AABwnclCVfoXYJmuWXDcKfgma?dl=0
-
-## Ready modules ##
-Sound
