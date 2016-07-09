@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <sound.h>
+#include <ev3_sound.h>
 
 int main ( void )
 {

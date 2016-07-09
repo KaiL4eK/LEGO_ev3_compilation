@@ -4,5 +4,4 @@
 **/build
 *.a
 *.run
-*.deb
 *.tar.gz

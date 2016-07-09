@@ -5,7 +5,7 @@
 
 extern "C" {
 
-#include <sound.h>
+#include <ev3_sound.h>
 
 void Sound_beep(const char *args, bool bSynchronous)
 {
