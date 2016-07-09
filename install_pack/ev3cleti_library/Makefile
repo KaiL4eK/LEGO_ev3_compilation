@@ -11,6 +11,7 @@ include_directory += $(public_directory) $(private_directory)
 install_directory = $(ev3cleti_lib_directory)
 headers_install_directory = include
 library_install_directory = lib
+examples_install_directory = ev3cleti_examples
 
 library_static_name = libev3cleti.a
 library_static_file = $(build_directory)/$(library_static_name)
@@ -43,6 +44,9 @@ $(build_directory):
 $(install_directory):
 	mkdir -p $@/$(library_install_directory)
 	mkdir -p $@/$(headers_install_directory)
+
+examples:
+	cp -r $(examples_directory) $(HOME)/$(examples_install_directory)
 
 clean:
 	rm -rf $(build_directory)
