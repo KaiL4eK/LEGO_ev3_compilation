@@ -1,12 +1,13 @@
 include ../common.mk
 
 library_file = lib/libev3c.a
+source_sirectory = src
 
 install_directory = $(ev3c_lib_directory)
 
 all: $(library_file) bin/test_sensor bin/test_motor bin/test_lcd bin/test_button bin/test_led bin/test_battery
 
-obj/%.o: src/%.c include/%.h include/ev3c.h Makefile
+obj/%.o: $(source_sirectory)/%.c include/%.h include/ev3c.h Makefile
 	mkdir -p $(@D)
 	$(CC) -c -o $@ $< $(cflags) -Iinclude
 
@@ -14,29 +15,29 @@ $(library_file): obj/ev3c_core.o obj/ev3c_lcd.o obj/ev3c_sensor.o obj/ev3c_motor
 	mkdir -p $(@D)
 	$(AR) rsc $@ $^
 
-bin/test_sensor: src/test_sensor.c $(library_file)
-	mkdir -p $(@D)
-	$(CC) -o $@ $< $(library_file) $(cflags) -Iinclude
+# bin/test_sensor: $(source_sirectory)/test_sensor.c $(library_file)
+# 	mkdir -p $(@D)
+# 	$(CC) -o $@ $< $(library_file) $(cflags) -Iinclude
 
-bin/test_motor: src/test_motor.c $(library_file)
-	mkdir -p $(@D)
-	$(CC) -o $@ $< $(library_file) $(cflags) -Iinclude
+# bin/test_motor: $(source_sirectory)/test_motor.c $(library_file)
+# 	mkdir -p $(@D)
+# 	$(CC) -o $@ $< $(library_file) $(cflags) -Iinclude
 
-bin/test_lcd: src/test_lcd.c $(library_file)
-	mkdir -p $(@D)
-	$(CC) -o $@ $< $(library_file) $(cflags) -Iinclude
+# bin/test_lcd: $(source_sirectory)/test_lcd.c $(library_file)
+# 	mkdir -p $(@D)
+# 	$(CC) -o $@ $< $(library_file) $(cflags) -Iinclude
 
-bin/test_button: src/test_button.c $(library_file)
-	mkdir -p $(@D)
-	$(CC) -o $@ $< $(library_file) $(cflags) -Iinclude
+# bin/test_button: $(source_sirectory)/test_button.c $(library_file)
+# 	mkdir -p $(@D)
+# 	$(CC) -o $@ $< $(library_file) $(cflags) -Iinclude
 
-bin/test_led: src/test_led.c $(library_file)
-	mkdir -p $(@D)
-	$(CC) -o $@ $< $(library_file) $(cflags) -Iinclude
+# bin/test_led: $(source_sirectory)/test_led.c $(library_file)
+# 	mkdir -p $(@D)
+# 	$(CC) -o $@ $< $(library_file) $(cflags) -Iinclude
 
-bin/test_battery: src/test_battery.c $(library_file)
-	mkdir -p $(@D)
-	$(CC) -o $@ $< $(library_file) $(cflags) -Iinclude
+# bin/test_battery: $(source_sirectory)/test_battery.c $(library_file)
+# 	mkdir -p $(@D)
+# 	$(CC) -o $@ $< $(library_file) $(cflags) -Iinclude
 
 documentation: include/*.h
 	mkdir -p /tmp/ev3DocumentationTemp
