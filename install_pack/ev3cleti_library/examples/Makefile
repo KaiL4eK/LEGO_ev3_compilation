@@ -3,8 +3,7 @@
 # 
 ip_robot_address = 0.0.0.0
 
-objects = $(patsubst %.c,%.o,$(wildcard *.c))
-executes = $(basename $(objects))
+executes = $(basename $(wildcard *.c))
 
 cross_compiler_directory = /usr/arm-linux-gnueabi
 ev3c_directory = /usr/local/ev3c
@@ -20,17 +19,13 @@ cflags = $(addprefix -I, $(include_directory)) -Wall -O3
 ldflags = $(addprefix -L, $(library_directory)) $(addprefix -l, $(libraries))
 
 CC = arm-linux-gnueabi-gcc
-LD = $(CC)
 
 execute_files = $(addprefix $(build_directory)/, $(executes))
 
 all: $(build_directory) $(execute_files)
 	
-$(execute_files): $(build_directory)/$(objects) 
-	$(LD) -o $@ $< $(ldflags)
-
-$(build_directory)/%.o : %.c
-	$(CC) $(cflags) -c $< -o $@
+$(execute_files): 
+	$(CC) -o $@ $(notdir $@.c) $(ldflags) $(cflags)
 
 $(build_directory):
 	mkdir -p $@
@@ -39,5 +34,5 @@ clean:
 	rm -rf $(build_directory)
 
 install: all
-	$(foreach executable, $(execute_files), scp $(executable) robot@$(ip_robot_address):~/$(executable);)
+	$(foreach executable, $(execute_files), scp $(executable) robot@$(ip_robot_address):~/$(notdir $(executable));)
 	

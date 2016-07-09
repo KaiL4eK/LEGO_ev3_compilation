@@ -1,12 +1,7 @@
-#ifndef SOUND_H_
-#define SOUND_H_
+#ifndef EV3_SOUND_H_
+#define EV3_SOUND_H_
 
-#ifndef __cplusplus
-typedef enum bool_ {
-	false = 0,
-	true = 1
-}bool;
-#endif
+#include <ev3_core.h>
 
 typedef struct note_ {
     float   frequency,
@@ -14,10 +9,10 @@ typedef struct note_ {
             delay;
 }Note_t;
 
-void Sound_speak (const char *speak_string, bool bSynchronous);
+int Sound_speak (const char *speak_string, bool bSynchronous);
 void Sound_tone(float frequency, float ms, bool bSynchronous);
-void Sound_tones(Note_t notes[], bool bSynchronous);
-void Sound_play(const char *soundfile, bool bSynchronous);
-void Sound_beep(const char *args, bool bSynchronous);
+void Sound_tones(Note_t notes[], size_t array_size, bool bSynchronous);
+int Sound_play(const char *soundfile, bool bSynchronous);
+int Sound_beep(const char *args, bool bSynchronous);
 
-#endif //SOUND_H_
+#endif //EV3_SOUND_H_

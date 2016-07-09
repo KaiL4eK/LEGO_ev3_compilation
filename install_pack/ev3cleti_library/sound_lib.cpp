@@ -7,22 +7,23 @@ extern "C" {
 
 #include <ev3_sound.h>
 
-void Sound_beep(const char *args, bool bSynchronous)
+int Sound_beep(const char *args, bool bSynchronous)
 {
-  std::ostringstream cmd;
-  cmd << "/usr/bin/beep " << std::string(args);
-  if (!bSynchronous) cmd << " &";
-  std::system(cmd.str().c_str());
+    std::ostringstream cmd;
+    cmd << "/usr/bin/beep " << std::string(args);
+    if (!bSynchronous) 
+        cmd << " &";
+    return( std::system(cmd.str().c_str()) );
 }
 
 //-----------------------------------------------------------------------------
 
-void Sound_tones(Note_t notes[], bool bSynchronous)
+void Sound_tones(Note_t notes[], size_t array_size, bool bSynchronous)
 {
     std::ostringstream args;
     bool first = true;
 
-    for ( int i = 0; ; i++ ) {
+    for ( size_t i = 0; i < array_size; i++ ) {
 
         if ( first ) {
             first = false;
@@ -43,33 +44,35 @@ void Sound_tones(Note_t notes[], bool bSynchronous)
 
 void Sound_tone(float frequency, float ms, bool bSynchronous) {
     Note_t notes [] = {{frequency, ms, 0.0f}};
-    Sound_tones(notes, bSynchronous);
+    Sound_tones(notes, 1, bSynchronous);
 }
 
 //-----------------------------------------------------------------------------
 
-void Sound_play(const char *soundfile, bool bSynchronous)
+int Sound_play(const char *soundfile, bool bSynchronous)
 {
-  std::ostringstream cmd;
-  cmd << "/usr/bin/aplay -q " << std::string(soundfile);
+    std::ostringstream cmd;
+    cmd << "/usr/bin/aplay -q " << std::string(soundfile);
 
-  if (!bSynchronous) cmd << " &";
+    if (!bSynchronous) 
+        cmd << " &";
 
-  std::system(cmd.str().c_str());
+    return( std::system(cmd.str().c_str()) );
 }
 
 //-----------------------------------------------------------------------------
 
-void Sound_speak (const char *speak_string, bool bSynchronous)
+int Sound_speak (const char *speak_string, bool bSynchronous)
 {
-  std::ostringstream cmd;
+    std::ostringstream cmd;
 
-  cmd << "/usr/bin/espeak -a 200 --stdout \"" << std::string(speak_string) << "\""
-      << " | /usr/bin/aplay -q";
+    cmd << "/usr/bin/espeak -a 200 --stdout \"" << std::string(speak_string) << "\""
+     << " | /usr/bin/aplay -q";
 
-  if (!bSynchronous) cmd << " &";
+    if (!bSynchronous) 
+        cmd << " &";
 
-  std::system(cmd.str().c_str());
+    return( std::system(cmd.str().c_str()) );
 }
 
 }

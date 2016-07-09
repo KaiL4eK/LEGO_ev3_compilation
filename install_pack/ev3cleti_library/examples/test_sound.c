@@ -3,6 +3,8 @@
 
 #include <ev3_sound.h>
 
+#define ARRAY_SIZE( array_ptr ) (sizeof(array_ptr)/sizeof(array_ptr[0]))
+
 int main ( void )
 {
     Sound_speak("Hello, I am Robot!", true);
@@ -27,6 +29,6 @@ int main ( void )
             {392, 350, 100}, {311.13, 250, 100}, {466.16, 25, 100},
             {392.00, 300, 150}, {311.13, 250, 100}, {466.16, 25, 100}, {392, 700, 0}
             };
-    Sound_tones(notes, true);
+    Sound_tones(notes, ARRAY_SIZE(notes), true);
 	return( 0 );
 }
