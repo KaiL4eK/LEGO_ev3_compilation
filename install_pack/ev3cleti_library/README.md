@@ -15,3 +15,6 @@ ev3dev-lang-cpp: https://github.com/ddemidov/ev3dev-lang-cpp
 
 ## Ready modules ##
 Sound
+Button
+Lcd
+Motor - not completed
