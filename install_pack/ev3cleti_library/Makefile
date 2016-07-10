@@ -18,7 +18,7 @@ library_static_file = $(build_directory)/$(library_static_name)
 
 libraries = ev3c ev3cleti stdc++
 
-cxxflags = $(cflags) -std=gnu++0x -D_GLIBCXX_USE_NANOSLEEP
+cxxflags = $(cflags) -std=gnu++0x
 ldflags = $(addprefix -L, $(library_directory)) $(addprefix -l, $(libraries))
 
 objects_library = $(addprefix $(build_directory)/,$(patsubst %.cpp,%.o,$(wildcard *lib.cpp)))
