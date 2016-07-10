@@ -14,7 +14,7 @@ EV3c: https://github.com/theZiz/ev3c
 ev3dev-lang-cpp: https://github.com/ddemidov/ev3dev-lang-cpp    
 
 ## Ready modules ##
-Sound
-Button
-Lcd
-Motor - not completed
+Sound  
+Button  
+Lcd  
+Motor - not completed  
