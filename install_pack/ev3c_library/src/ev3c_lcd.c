@@ -48,6 +48,14 @@ void ev3_init_lcd()
 	ioctl(__vtfd, KDSETMODE, KD_GRAPHICS);
 }
 
+void ev3_quit_lcd()
+{
+	munmap(__fbp, EV3_SY_LCD);
+    close(__fbfd);
+	ioctl(__vtfd, KDSETMODE, KD_TEXT);
+	close(__vtfd);
+}
+
 void ev3_clear_lcd()
 {
 	memset(__fbp,0,EV3_SY_LCD);
@@ -215,14 +223,10 @@ void ev3_rectangle_lcd(int32_t x,int32_t y,int32_t w,int32_t h,int32_t bit)
 	if (maxy >= EV3_Y_LCD)
 		maxy = EV3_Y_LCD-1;
 
-	if (bit)
-		for (a = minx; a <= maxx; a++)
-			for (b = miny; b <= maxy; b++)
-				EV3_PIXEL_SET(a,b);
-	else
-		for (a = minx; a <= maxx; a++)
-			for (b = miny; b <= maxy; b++)
-				EV3_PIXEL_UNSET(a,b);
+	for (a = minx; a <= maxx; a++)
+		for (b = miny; b <= maxy; b++) {
+			EV3_PIXEL(a,b,bit);
+		}
 }
 
 void ev3_rectangle_lcd_out(int32_t x,int32_t y,int32_t w,int32_t h,int32_t bit)
@@ -249,35 +253,14 @@ void ev3_rectangle_lcd_out(int32_t x,int32_t y,int32_t w,int32_t h,int32_t bit)
 	if (maxy >= EV3_Y_LCD)
 		maxy = EV3_Y_LCD-1;
 
-	if (bit)
-	{
-		if (y == miny)
-			for (a = minx; a <= maxx; a++)
-				EV3_PIXEL_SET(a,miny);
-		if (y+w == maxy)
-			for (a = minx; a <= maxx; a++)
-				EV3_PIXEL_SET(a,maxy);
-		if (x == minx)
-			for (a = miny+1; a <= maxy-1; a++)
-				EV3_PIXEL_SET(minx,a);
-		if (x+h == maxx)
-			for (a = miny+1; a <= maxy-1; a++)
-				EV3_PIXEL_SET(maxx,a);
+	for ( a = minx; a <= maxx; a++ ) {
+		EV3_PIXEL(a,miny,bit);
+		EV3_PIXEL(a,maxy,bit);
 	}
-	else
-	{
-		if (y == miny)
-			for (a = minx; a <= maxx; a++)
-				EV3_PIXEL_UNSET(a,miny);
-		if (y+w == maxy)
-			for (a = minx; a <= maxx; a++)
-				EV3_PIXEL_UNSET(a,maxy);
-		if (x == minx)
-			for (a = miny+1; a <= maxy-1; a++)
-				EV3_PIXEL_UNSET(minx,a);
-		if (x+h == maxx)
-			for (a = miny+1; a <= maxy-1; a++)
-				EV3_PIXEL_UNSET(maxx,a);
+
+	for ( a = miny+1; a <= maxy-1; a++ ) {
+		EV3_PIXEL(minx, a, bit);
+		EV3_PIXEL(maxx, a, bit);
 	}
 }
 
@@ -510,12 +493,4 @@ void ev3_line_lcd(int32_t x0, int32_t y0, int32_t x1, int32_t y1,int32_t bit)
 			if (e2 > dy) { err += dy; x0 += sx; } /* e_xy+e_x > 0 */
 			if (e2 < dx) { err += dx; y0 += sy; } /* e_xy+e_y < 0 */
 		}	
-}
-
-void ev3_quit_lcd()
-{
-	munmap(__fbp, EV3_SY_LCD);
-    close(__fbfd);
-	ioctl(__vtfd, KDSETMODE, KD_TEXT);
-	close(__vtfd);
 }

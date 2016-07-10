@@ -5,7 +5,7 @@ source_sirectory = src
 
 install_directory = $(ev3c_lib_directory)
 
-all: $(library_file) bin/test_sensor bin/test_motor bin/test_lcd bin/test_button bin/test_led bin/test_battery
+all: $(library_file) #bin/test_sensor bin/test_motor bin/test_lcd bin/test_button bin/test_led bin/test_battery
 
 obj/%.o: $(source_sirectory)/%.c include/%.h include/ev3c.h Makefile
 	mkdir -p $(@D)
