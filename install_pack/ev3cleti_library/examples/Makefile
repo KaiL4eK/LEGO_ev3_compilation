@@ -3,7 +3,8 @@
 # 
 ip_robot_address = 0.0.0.0
 
-executes = $(basename $(wildcard *.c))
+sources = $(wildcard *.c)
+executes = $(basename $(sources))
 
 cross_compiler_directory = /usr/arm-linux-gnueabi
 ev3c_directory = /usr/local/ev3c
@@ -24,7 +25,7 @@ execute_files = $(addprefix $(build_directory)/, $(executes))
 
 all: $(build_directory) $(execute_files)
 	
-$(execute_files): 
+$(execute_files): $(sources)
 	$(CC) -o $@ $(notdir $@.c) $(ldflags) $(cflags)
 
 $(build_directory):
