@@ -26,3 +26,10 @@ CFLAGS (for library) += -D_GLIBCXX_USE_NANOSLEEP
 
 ## Other data ##
 https://www.dropbox.com/sh/3q4xj48iel743ug/AABwnclCVfoXYJmuWXDcKfgma?dl=0
+
+## Library functions ##
+In repository they lay in  
+install_pack/ev3cleti_library/public  
+
+In installed system  
+/usr/local/ev3cleti/include
