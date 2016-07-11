@@ -28,6 +28,8 @@ typedef std::string         address_type;
 const address_type INPUT_AUTO;  //!< Automatic input selection
 const address_type OUTPUT_AUTO; //!< Automatic output selection
 
+std::ifstream &ifstream_open(const std::string &path);
+
 //-----------------------------------------------------------------------------
 
 class device
