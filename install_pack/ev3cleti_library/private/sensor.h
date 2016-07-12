@@ -1,3 +1,6 @@
+#ifndef SENSOR_H_
+#define SENSOR_H_
+
 #include <device.h>
 
 class sensor : protected device
@@ -65,8 +68,6 @@ public:
       std::copy_n(_bin_data.data(), _bin_data.size(), static_cast<char*>(buf));
   }
 
-//~autogen generic-get-set classes.sensor>currentClass
-
   // Address: read-only
   // Returns the name of the port that the sensor is connected to, e.g. `ev3:in1`.
   // I2C sensors also include the I2C address (decimal), e.g. `ev3:in1:i2c8`.
@@ -117,9 +118,6 @@ public:
   // empty string
   std::string units() const { return get_attr_string("units"); }
 
-
-//~autogen
-
 protected:
   sensor() {}
 
@@ -129,8 +127,6 @@ protected:
 };
 
 //-----------------------------------------------------------------------------
-
-//~autogen generic-class-description classes.i2cSensor>currentClass
 
 // A generic interface to control I2C-type EV3 sensors.
 
@@ -157,14 +153,9 @@ public:
     set_attr_int("poll_ms", v);
     return *this;
   }
-
-
-//~autogen
 };
 
 //-----------------------------------------------------------------------------
-
-//~autogen special-sensor-declaration specialSensorTypes.touchSensor>currentClass
 
 // Touch Sensor
 class touch_sensor : public sensor
@@ -185,11 +176,7 @@ public:
 
 };
 
-//~autogen
-
 //-----------------------------------------------------------------------------
-
-//~autogen special-sensor-declaration specialSensorTypes.colorSensor>currentClass
 
 // LEGO EV3 color sensor.
 class color_sensor : public sensor
@@ -259,11 +246,7 @@ public:
 
 };
 
-//~autogen
-
 //-----------------------------------------------------------------------------
-
-//~autogen special-sensor-declaration specialSensorTypes.ultrasonicSensor>currentClass
 
 // LEGO EV3 ultrasonic sensor.
 class ultrasonic_sensor : public sensor
@@ -310,11 +293,7 @@ public:
 
 };
 
-//~autogen
-
 //-----------------------------------------------------------------------------
-
-//~autogen special-sensor-declaration specialSensorTypes.gyroSensor>currentClass
 
 // LEGO EV3 gyro sensor.
 class gyro_sensor : public sensor
@@ -353,11 +332,7 @@ public:
 
 };
 
-//~autogen
-
 //-----------------------------------------------------------------------------
-
-//~autogen special-sensor-declaration specialSensorTypes.infraredSensor>currentClass
 
 // LEGO EV3 infrared sensor.
 class infrared_sensor : public sensor
@@ -390,11 +365,7 @@ public:
 
 };
 
-//~autogen
-
 //-----------------------------------------------------------------------------
-
-//~autogen special-sensor-declaration specialSensorTypes.soundSensor>currentClass
 
 // LEGO NXT Sound Sensor
 class sound_sensor : public sensor
@@ -425,11 +396,7 @@ public:
 
 };
 
-//~autogen
-
 //-----------------------------------------------------------------------------
-
-//~autogen special-sensor-declaration specialSensorTypes.lightSensor>currentClass
 
 // LEGO NXT Light Sensor
 class light_sensor : public sensor
@@ -457,3 +424,19 @@ public:
   }
 
 };
+
+constexpr char sensor::ev3_touch[];
+constexpr char sensor::ev3_color[];
+constexpr char sensor::ev3_ultrasonic[];
+constexpr char sensor::ev3_gyro[];
+constexpr char sensor::ev3_infrared[];
+constexpr char sensor::nxt_touch[];
+constexpr char sensor::nxt_light[];
+constexpr char sensor::nxt_sound[];
+constexpr char sensor::nxt_ultrasonic[];
+constexpr char sensor::nxt_i2c_sensor[];
+constexpr char sensor::nxt_analog[];     
+
+constexpr char ultrasonic_sensor::mode_us_dist_cm[];
+
+#endif // SENSOR_H_

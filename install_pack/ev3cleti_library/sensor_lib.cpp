@@ -1,7 +1,44 @@
-
 #include <ev3_core.h>
 #include <sensor.h>
 #include <lego_port.h>
+
+std::map<std::string, sensor *> sensors_list;
+
+template<class SensorClass>
+SensorClass *find_sensor_in_list( std::string port )
+{
+    if ( sensors_list.count( port ) ) {
+        return( (ultrasonic_sensor *)sensors_list[port] );
+    } else {
+        SensorClass *new_sensor = new SensorClass( port );
+
+        if ( new_sensor->connected() ) {
+            sensors_list[port] = new_sensor;
+            return new_sensor;
+        } else {
+            delete new_sensor;
+            return NULL;
+        }
+    }
+}
+
+extern "C" {
+
+float UltraSonic_read_cm ( const char *sensor_port )
+{
+    ultrasonic_sensor *sensor_ptr = find_sensor_in_list<ultrasonic_sensor>( std::string( sensor_port ) );
+
+    if ( sensor_ptr ) {
+        return( sensor_ptr->distance_centimeters() );
+    } else {
+        // Program couldn`t find sensor in list and can`t connect
+        // Here better process error
+    }
+
+    return( 0.0f );
+}
+  
+}
 
 sensor::sensor(address_type address)
 {
@@ -38,6 +75,8 @@ bool sensor::connect(const std::map<std::string, std::set<std::string>> &match) 
 }
 
 //-----------------------------------------------------------------------------
+
+
 
 std::string sensor::type_name() const
 {
@@ -85,7 +124,8 @@ int sensor::value(unsigned index) const
 
 float sensor::float_value(unsigned index) const
 {
-  return value(index) * powf(10, -decimals());
+    int val = value( index );
+    return( val * powf(10, -decimals()) );
 }
 
 //-----------------------------------------------------------------------------
@@ -136,28 +176,12 @@ i2c_sensor::i2c_sensor(address_type address) :
 
 //-----------------------------------------------------------------------------
 
-//~autogen generic-define-property-value specialSensorTypes.touchSensor>currentClass
-
-constexpr char touch_sensor::mode_touch[];
-
-//~autogen
-
 touch_sensor::touch_sensor(address_type address) :
   sensor(address, { ev3_touch, nxt_touch })
 {
 }
 
 //-----------------------------------------------------------------------------
-
-//~autogen generic-define-property-value specialSensorTypes.colorSensor>currentClass
-
-constexpr char color_sensor::mode_col_reflect[];
-constexpr char color_sensor::mode_col_ambient[];
-constexpr char color_sensor::mode_col_color[];
-constexpr char color_sensor::mode_ref_raw[];
-constexpr char color_sensor::mode_rgb_raw[];
-
-//~autogen
 
 color_sensor::color_sensor(address_type address) :
   sensor(address, { ev3_color })
@@ -166,32 +190,12 @@ color_sensor::color_sensor(address_type address) :
 
 //-----------------------------------------------------------------------------
 
-//~autogen generic-define-property-value specialSensorTypes.ultrasonicSensor>currentClass
-
-constexpr char ultrasonic_sensor::mode_us_dist_cm[];
-constexpr char ultrasonic_sensor::mode_us_dist_in[];
-constexpr char ultrasonic_sensor::mode_us_listen[];
-constexpr char ultrasonic_sensor::mode_us_si_cm[];
-constexpr char ultrasonic_sensor::mode_us_si_in[];
-
-//~autogen
-
 ultrasonic_sensor::ultrasonic_sensor(address_type address) :
   sensor(address, { ev3_ultrasonic, nxt_ultrasonic })
 {
 }
 
 //-----------------------------------------------------------------------------
-
-//~autogen generic-define-property-value specialSensorTypes.gyroSensor>currentClass
-
-constexpr char gyro_sensor::mode_gyro_ang[];
-constexpr char gyro_sensor::mode_gyro_rate[];
-constexpr char gyro_sensor::mode_gyro_fas[];
-constexpr char gyro_sensor::mode_gyro_g_a[];
-constexpr char gyro_sensor::mode_gyro_cal[];
-
-//~autogen
 
 gyro_sensor::gyro_sensor(address_type address) :
   sensor(address, { ev3_gyro })
@@ -200,29 +204,12 @@ gyro_sensor::gyro_sensor(address_type address) :
 
 //-----------------------------------------------------------------------------
 
-//~autogen generic-define-property-value specialSensorTypes.infraredSensor>currentClass
-
-constexpr char infrared_sensor::mode_ir_prox[];
-constexpr char infrared_sensor::mode_ir_seek[];
-constexpr char infrared_sensor::mode_ir_remote[];
-constexpr char infrared_sensor::mode_ir_rem_a[];
-constexpr char infrared_sensor::mode_ir_cal[];
-
-//~autogen
-
 infrared_sensor::infrared_sensor(address_type address) :
   sensor(address, { ev3_infrared })
 {
 }
 
 //-----------------------------------------------------------------------------
-
-//~autogen generic-define-property-value specialSensorTypes.soundSensor>currentClass
-
-constexpr char sound_sensor::mode_db[];
-constexpr char sound_sensor::mode_dba[];
-
-//~autogen
 
 sound_sensor::sound_sensor(address_type address) :
   sensor(address, { nxt_sound, nxt_analog })
@@ -245,17 +232,12 @@ sound_sensor::sound_sensor(address_type address) :
 
 //-----------------------------------------------------------------------------
 
-//~autogen generic-define-property-value specialSensorTypes.lightSensor>currentClass
-
-constexpr char light_sensor::mode_reflect[];
-constexpr char light_sensor::mode_ambient[];
-
-//~autogen
-
 light_sensor::light_sensor(address_type address) :
   sensor(address, { nxt_light })
 {
 }
+
+//-----------------------------------------------------------------------------
 
 lego_port::lego_port(address_type address)
 {
@@ -279,3 +261,5 @@ bool lego_port::connect(const std::map<std::string, std::set<std::string>> &matc
 
   return false;
 }
+
+

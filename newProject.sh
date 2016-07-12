@@ -29,7 +29,7 @@ build_directory := build
 library_directory := $(cross_compiler_directory)/lib $(ev3c_directory)/lib $(ev3cleti_lib_directory)/lib
 include_directory := $(cross_compiler_directory)/include $(ev3c_directory)/include $(ev3cleti_lib_directory)/include
 
-libraries := ev3c ev3cleti stdc++ 
+libraries := ev3c ev3cleti m stdc++ 
 
 cflags := $(addprefix -I, $(include_directory)) -Wall -O3 -std=gnu99
 ldflags := $(addprefix -L, $(library_directory)) $(addprefix -l, $(libraries))
