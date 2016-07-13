@@ -19,7 +19,7 @@ sudo make install -C $LIBRARY_DIR
 # fi
 
 LIBRARY_INSTALL_DIR=/usr/local/ev3cleti
-BINARY_INSTALL_PATH=/usr/local/bin/ev3_newApp
+BINARY_INSTALL_PATH=/usr/local/bin/ev3napp
 
 if [ -d $LIBRARY_INSTALL_DIR/bin ]; then
 	sudo cp newProject.sh $LIBRARY_INSTALL_DIR/bin
