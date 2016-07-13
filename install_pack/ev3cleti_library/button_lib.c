@@ -1,11 +1,8 @@
-#include <fstream>
 #include <fcntl.h>
 #include <sys/ioctl.h>
 #include <sys/types.h> 
 #include <unistd.h>
 #include <linux/input.h>
-
-extern "C" {
 
 #include <ev3_button.h>
 
@@ -13,7 +10,7 @@ int __ev3_button_fd = -1;
 
 bool Button_pressed ( ev3_button_id_t button )
 {
-	uint8_t keys[96];
+	char keys[96];
 	
 	if ( __ev3_button_fd < 0 ) {
 		__ev3_button_fd = open( "/dev/input/by-path/platform-gpio-keys.0-event", O_RDONLY );
@@ -50,6 +47,4 @@ int Button_free_resources ( void )
 		close( __ev3_button_fd );
 	}
 	return( 0 );
-}
-
 }

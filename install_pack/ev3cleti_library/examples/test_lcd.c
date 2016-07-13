@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#include <ev3_lcd.h>
+#include <ev3_core.h>
 
 int main ( void )
 {
@@ -14,10 +14,10 @@ int main ( void )
 	Lcd_text( 100, 100, "Tiny", TINY );
 
 	sleep( 1 );
-	Lcd_draw_rectangle( 10, 30, 10, 40, BLACK, FILL );
+	Lcd_draw_rectangle_filled( 10, 30, 10, 40, BLACK );
 
 	sleep( 1 );
-	Lcd_draw_rectangle( 30, 30, 10, 40, BLACK, BORDER );
+	Lcd_draw_rectangle_edged( 30, 30, 10, 40, BLACK );
 
 	sleep( 1 );
 	Lcd_draw_ellipse_filled( 55, 50, 10, 20, BLACK );
