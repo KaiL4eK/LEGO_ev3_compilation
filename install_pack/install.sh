@@ -14,6 +14,7 @@ cp EV3.sublime-build ~/.config/sublime-text-3/Packages/User
 
 LIBRARY_DIR=ev3cleti_library
 
+sudo make distclean -C $LIBRARY_DIR
 make -C $LIBRARY_DIR
 sudo make install -C $LIBRARY_DIR
 # fi
@@ -24,5 +25,9 @@ BINARY_INSTALL_PATH=/usr/local/bin/ev3napp
 if [ -d $LIBRARY_INSTALL_DIR/bin ]; then
 	sudo cp newProject.sh $LIBRARY_INSTALL_DIR/bin
 	sudo ln -sf $LIBRARY_INSTALL_DIR/bin/newProject.sh $BINARY_INSTALL_PATH
+else
+	echo "Cant install binary"
+	exit 1
 fi
 
+exit 0
