@@ -3,10 +3,13 @@
 read -d '' main_text <<"EOF"
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
+
+#include <ev3_core.h>
 
 int main ( void )
 {
-	printf( "Hello World\n" );
+	// Here lay code =)
 
 	return( 0 );
 }
