@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <ev3_sound.h>
+#include <ev3_core.h>
 
 #define ARRAY_SIZE( array_ptr ) (sizeof(array_ptr)/sizeof(array_ptr[0]))
 

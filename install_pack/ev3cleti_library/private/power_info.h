@@ -7,8 +7,6 @@ public:
 
   using device::connected;
 
-//~autogen generic-get-set classes.powerSupply>currentClass
-
   // Measured Current: read-only
   // The measured current that the battery is supplying (in microamps)
   int measured_current() const { return get_attr_int("current_now"); }
@@ -28,9 +26,6 @@ public:
 
   // Type: read-only
   std::string type() const { return get_attr_string("type"); }
-
-
-//~autogen
 
   float measured_amps()       const { return measured_current() / 1000000.f; }
   float measured_volts()      const { return measured_voltage() / 1000000.f; }
