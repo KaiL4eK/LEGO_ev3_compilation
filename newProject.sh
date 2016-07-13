@@ -32,7 +32,7 @@ include_directory := $(cross_compiler_directory)/include $(ev3c_directory)/inclu
 libraries := ev3c ev3cleti stdc++ 
 
 cflags := $(addprefix -I, $(include_directory)) -Wall -O3 -std=gnu99
-ldflags := $(addprefix -L, $(library_directory)) $(addprefix -l, $(libraries))
+ldflags := $(addprefix -L, $(library_directory)) $(addprefix -l, $(libraries)) -static
 
 CC := arm-linux-gnueabi-gcc
 LD := $(CC)
