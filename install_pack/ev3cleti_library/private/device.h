@@ -14,7 +14,7 @@
 #include <dirent.h>
 #include <string.h>
 
-#include <ev3_core.h>
+#include <ev3_ports.h>
 
 #ifndef SYS_ROOT
 #define SYS_ROOT "/sys/class"
