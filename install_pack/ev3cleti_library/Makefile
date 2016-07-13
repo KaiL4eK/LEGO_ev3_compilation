@@ -26,7 +26,8 @@ library_static_file = $(build_directory)/$(library_static_name)
 cflags = $(addprefix -I, $(include_directory)) -Wall -O3
 cxxflags = $(cflags) -std=gnu++0x
 
-objects_library = $(addprefix $(build_directory)/,$(patsubst %.cpp,%.o,$(wildcard *lib.cpp)))
+objects_library  = $(addprefix $(build_directory)/,$(patsubst %.cpp,%.o,$(wildcard *.cpp)))
+objects_library += $(addprefix $(build_directory)/,$(patsubst %.c,%.o,$(wildcard *.c)))
 
 all: $(build_directory) $(library_static_file)
 
