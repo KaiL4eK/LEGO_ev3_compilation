@@ -13,6 +13,7 @@ typedef enum bool_ {
 #include <ev3_motor.h>
 #include <ev3_power_info.h>
 #include <ev3_sound.h>
+#include <ev3_sensor.h>
 #include <ev3_led.h>
 
 #include <ev3_ports.h>

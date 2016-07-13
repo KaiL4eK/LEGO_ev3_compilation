@@ -1,14 +1,13 @@
-#include <ev3_core.h>
 #include <sensor.h>
 #include <lego_port.h>
 
 std::map<std::string, sensor *> sensors_list;
 
 template<class SensorClass>
-SensorClass *find_sensor_in_list( std::string port )
+SensorClass *get_sensor_ptr( std::string port )
 {
     if ( sensors_list.count( port ) ) {
-        return( (ultrasonic_sensor *)sensors_list[port] );
+        return( (SensorClass *)sensors_list[port] );
     } else {
         SensorClass *new_sensor = new SensorClass( port );
 
@@ -17,27 +16,50 @@ SensorClass *find_sensor_in_list( std::string port )
             return new_sensor;
         } else {
             delete new_sensor;
-            return NULL;
+            // error
         }
     }
 }
 
 extern "C" {
 
-float UltraSonic_read_cm ( const char *sensor_port )
+#include <ev3_sensor.h>
+#include <ev3_ports.h>
+
+float UltraSonicSensor_read_cm ( const char *sensor_port )
 {
-    ultrasonic_sensor *sensor_ptr = find_sensor_in_list<ultrasonic_sensor>( std::string( sensor_port ) );
+    ultrasonic_sensor *us_ptr = get_sensor_ptr<ultrasonic_sensor>( std::string( sensor_port ) );
 
-    if ( sensor_ptr ) {
-        return( sensor_ptr->distance_centimeters() );
-    } else {
-        // Program couldn`t find sensor in list and can`t connect
-        // Here better process error
-    }
-
-    return( 0.0f );
+    return( us_ptr->distance_centimeters() );
 }
-  
+
+float LightSensor_read_percent ( const char *sensor_port, Light_s_mode_t mode )
+{
+    light_sensor *light_ptr = get_sensor_ptr<light_sensor>( std::string( sensor_port ) );
+
+    if ( mode == REFLECT )
+        return( light_ptr->reflected_light_intensity() );
+    else if ( mode == AMBIENT )
+        return( light_ptr->ambient_light_intensity() );
+    else
+        return( 0.0f );
+}
+
+bool TouchSensor_isPressed ( const char *sensor_port )
+{
+    touch_sensor *touch_ptr = get_sensor_ptr<touch_sensor>( std::string( sensor_port ) );
+
+    return( touch_ptr->is_pressed() );
+}
+
+Color_s_color_t ColorSensor_get_color ( const char *sensor_port )
+{
+    color_sensor *color_ptr = get_sensor_ptr<color_sensor>( std::string( sensor_port ) );
+
+    int color = color_ptr->color();
+    return( (color > COLOR_BROWN || color <= COLOR_NO) ? COLOR_NO : (Color_s_color_t)color );
+}
+
 }
 
 //-----------------------------------------------------------------------------
@@ -263,4 +285,46 @@ bool lego_port::connect(const std::map<std::string, std::set<std::string>> &matc
   return false;
 }
 
+constexpr char sensor::ev3_touch[];
+constexpr char sensor::ev3_color[];
+constexpr char sensor::ev3_ultrasonic[];
+constexpr char sensor::ev3_gyro[];
+constexpr char sensor::ev3_infrared[];
+constexpr char sensor::nxt_touch[];
+constexpr char sensor::nxt_light[];
+constexpr char sensor::nxt_sound[];
+constexpr char sensor::nxt_ultrasonic[];
+constexpr char sensor::nxt_i2c_sensor[];
+constexpr char sensor::nxt_analog[];     
 
+constexpr char touch_sensor::mode_touch[];
+
+constexpr char color_sensor::mode_col_reflect[];
+constexpr char color_sensor::mode_col_ambient[];
+constexpr char color_sensor::mode_col_color[];
+constexpr char color_sensor::mode_ref_raw[];
+constexpr char color_sensor::mode_rgb_raw[];
+
+constexpr char ultrasonic_sensor::mode_us_dist_cm[];
+constexpr char ultrasonic_sensor::mode_us_dist_in[];
+constexpr char ultrasonic_sensor::mode_us_listen[];
+constexpr char ultrasonic_sensor::mode_us_si_cm[];
+constexpr char ultrasonic_sensor::mode_us_si_in[];
+
+constexpr char gyro_sensor::mode_gyro_ang[];
+constexpr char gyro_sensor::mode_gyro_rate[];
+constexpr char gyro_sensor::mode_gyro_fas[];
+constexpr char gyro_sensor::mode_gyro_g_a[];
+constexpr char gyro_sensor::mode_gyro_cal[];
+
+constexpr char infrared_sensor::mode_ir_prox[];
+constexpr char infrared_sensor::mode_ir_seek[];
+constexpr char infrared_sensor::mode_ir_remote[];
+constexpr char infrared_sensor::mode_ir_rem_a[];
+constexpr char infrared_sensor::mode_ir_cal[];
+
+constexpr char sound_sensor::mode_db[];
+constexpr char sound_sensor::mode_dba[];
+
+constexpr char light_sensor::mode_reflect[];
+constexpr char light_sensor::mode_ambient[];
