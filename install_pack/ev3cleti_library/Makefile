@@ -17,6 +17,7 @@ include_directory = $(cross_compiler_directory)/include $(public_directory) $(pr
 install_directory = $(ev3cleti_lib_directory)
 headers_install_directory = include
 library_install_directory = lib
+binary_install_directory = bin
 examples_install_directory = ev3cleti_examples
 
 library_static_name = libev3cleti.a
@@ -48,6 +49,7 @@ $(build_directory):
 $(install_directory):
 	mkdir -p $@/$(library_install_directory)
 	mkdir -p $@/$(headers_install_directory)
+	mkdir -p $@/$(binary_install_directory)
 
 examples:
 	cp -r $(examples_directory) $(HOME)/$(examples_install_directory)
@@ -56,3 +58,6 @@ clean:
 	rm -rf $(build_directory)
 	rm -f *~
 	make clean -C $(examples_directory)
+
+distclean: clean
+	sudo rm -rf $(ev3cleti_lib_directory)

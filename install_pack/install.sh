@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# install cross-compiler, cmake
+# if [ 1 != 1 ]; then #skip this block
+# install cross-compiler
 sudo apt-get update && \
 sudo apt-get install -y gcc-arm-linux-gnueabi g++-arm-linux-gnueabi ssh-askpass-gnome ssh-askpass
 #cmake libcanberra-gtk-module gtk2-engines-pixbuf
@@ -15,3 +16,13 @@ LIBRARY_DIR=ev3cleti_library
 
 make -C $LIBRARY_DIR
 sudo make install -C $LIBRARY_DIR
+# fi
+
+LIBRARY_INSTALL_DIR=/usr/local/ev3cleti
+BINARY_INSTALL_PATH=/usr/local/bin/ev3_newApp
+
+if [ -d $LIBRARY_INSTALL_DIR/bin ]; then
+	sudo cp newProject.sh $LIBRARY_INSTALL_DIR/bin
+	sudo ln -sf $LIBRARY_INSTALL_DIR/bin/newProject.sh $BINARY_INSTALL_PATH
+fi
+
