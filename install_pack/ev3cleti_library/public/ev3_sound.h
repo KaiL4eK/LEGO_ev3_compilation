@@ -1,8 +1,6 @@
 #ifndef EV3_SOUND_H_
 #define EV3_SOUND_H_
 
-#include <ev3_core.h>
-
 typedef struct note_ {
     float   frequency,
             length,

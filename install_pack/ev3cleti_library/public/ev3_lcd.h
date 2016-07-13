@@ -1,6 +1,9 @@
 #ifndef EV3_LCD_H_
 #define EV3_LCD_H_
 
+#include <stdint.h>
+#include <stddef.h>
+
 typedef enum pixel_color_ {
 	WHITE = 0,
 	BLACK

@@ -1,7 +1,7 @@
 #ifndef EV3_BUTTON_H_
 #define EV3_BUTTON_H_
 
-#include <ev3_core.h>
+#include <ev3_bool.h>
 
 typedef enum ev3_button_id_
 {

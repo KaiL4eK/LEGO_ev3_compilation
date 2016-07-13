@@ -5,6 +5,7 @@
 #include <linux/input.h>
 
 #include <ev3_button.h>
+#include <ev3_bool.h>
 
 int __ev3_button_fd = -1;
 
