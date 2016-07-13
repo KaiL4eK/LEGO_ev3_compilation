@@ -437,6 +437,36 @@ constexpr char sensor::nxt_ultrasonic[];
 constexpr char sensor::nxt_i2c_sensor[];
 constexpr char sensor::nxt_analog[];     
 
+constexpr char touch_sensor::mode_touch[];
+
+constexpr char color_sensor::mode_col_reflect[];
+constexpr char color_sensor::mode_col_ambient[];
+constexpr char color_sensor::mode_col_color[];
+constexpr char color_sensor::mode_ref_raw[];
+constexpr char color_sensor::mode_rgb_raw[];
+
 constexpr char ultrasonic_sensor::mode_us_dist_cm[];
+constexpr char ultrasonic_sensor::mode_us_dist_in[];
+constexpr char ultrasonic_sensor::mode_us_listen[];
+constexpr char ultrasonic_sensor::mode_us_si_cm[];
+constexpr char ultrasonic_sensor::mode_us_si_in[];
+
+constexpr char gyro_sensor::mode_gyro_ang[];
+constexpr char gyro_sensor::mode_gyro_rate[];
+constexpr char gyro_sensor::mode_gyro_fas[];
+constexpr char gyro_sensor::mode_gyro_g_a[];
+constexpr char gyro_sensor::mode_gyro_cal[];
+
+constexpr char infrared_sensor::mode_ir_prox[];
+constexpr char infrared_sensor::mode_ir_seek[];
+constexpr char infrared_sensor::mode_ir_remote[];
+constexpr char infrared_sensor::mode_ir_rem_a[];
+constexpr char infrared_sensor::mode_ir_cal[];
+
+constexpr char sound_sensor::mode_db[];
+constexpr char sound_sensor::mode_dba[];
+
+constexpr char light_sensor::mode_reflect[];
+constexpr char light_sensor::mode_ambient[];
 
 #endif // SENSOR_H_

@@ -40,6 +40,8 @@ float UltraSonic_read_cm ( const char *sensor_port )
   
 }
 
+//-----------------------------------------------------------------------------
+
 sensor::sensor(address_type address)
 {
   connect({{ "address", { address }}});
@@ -75,8 +77,6 @@ bool sensor::connect(const std::map<std::string, std::set<std::string>> &match) 
 }
 
 //-----------------------------------------------------------------------------
-
-
 
 std::string sensor::type_name() const
 {
@@ -124,8 +124,9 @@ int sensor::value(unsigned index) const
 
 float sensor::float_value(unsigned index) const
 {
-    int val = value( index );
-    return( val * powf(10, -decimals()) );
+    // int val = value( index );
+    // return( val * powf(10, -decimals()) );
+    return( value( index ) / (10.0 * decimals()) );
 }
 
 //-----------------------------------------------------------------------------
