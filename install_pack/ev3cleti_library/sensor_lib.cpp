@@ -1,5 +1,6 @@
 #include <sensor.h>
 #include <lego_port.h>
+#include <common.h>
 
 std::map<std::string, sensor *> sensors_list;
 
@@ -16,7 +17,8 @@ SensorClass *get_sensor_ptr( std::string port )
             return new_sensor;
         } else {
             delete new_sensor;
-            // error
+            error_process( __FUNCTION__, "Incorrect sensor port "+port );
+            return( nullptr );
         }
     }
 }

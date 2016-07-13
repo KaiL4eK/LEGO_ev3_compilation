@@ -1,4 +1,72 @@
 #include <motor.h>
+#include <common.h>
+
+std::map<std::string, motor *> motors_list;
+
+motor *get_motor_ptr( std::string port )
+{
+    if ( motors_list.count( port ) ) {
+        return( (motor *)motors_list[port] );
+    } else {
+        motor *new_motor = new motor( port );
+
+        if ( new_motor->connected() ) {
+            motors_list[port] = new_motor;
+            return new_motor;
+        } else {
+            delete new_motor;
+            error_process( __FUNCTION__, "Incorrect motor port "+port );
+            return( nullptr );
+        }
+    }
+}
+
+extern "C" {
+
+bool Motor_isConnected ( const char *motor_port )
+{
+    motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
+
+    if ( motor_ptr ) {
+        return motor_ptr->connected();
+    }
+    return( false );
+}
+
+void Motor_run_timed ( const char *motor_port, long time_ms, int16_t power )
+{
+    motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
+
+    motor_ptr->set_time_sp( time_ms );
+    motor_ptr->set_duty_cycle_sp( power );
+    motor_ptr->run_timed();
+}
+
+void Motor_run_forever ( const char *motor_port, int16_t power )
+{
+    motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
+
+    motor_ptr->set_duty_cycle_sp( power );
+    motor_ptr->run_forever();
+}
+
+void Motor_stop ( const char *motor_port )
+{
+    motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
+
+    motor_ptr->stop();
+}
+
+void Motor_stor_all ( void )
+{
+    for (auto m_ptr : motors_list) {
+        m_ptr.second->reset();
+    }
+}
+
+}
+
+//-----------------------------------------------------------------------------
 
 motor::motor(address_type address)
 {
@@ -51,66 +119,3 @@ servo_motor::servo_motor(address_type address)
 }
 
 //-----------------------------------------------------------------------------
-
-std::map<std::string, motor *> motors_list;
-
-motor *find_motor_in_list( std::string port )
-{
-    if ( motors_list.count( port ) ) {
-        return( motors_list[port] );
-    } else {
-        motor *new_motor = new motor( port );
-
-        if ( new_motor->connected() ) {
-            motors_list[port] = new_motor;
-            return new_motor;
-        } else {
-            delete new_motor;
-            return NULL;
-        }
-    }
-}
-
-extern "C" {
-
-bool Motor_isConnected ( const char *motor_port )
-{
-    motor *motor_ptr = find_motor_in_list( std::string(motor_port) );
-
-    if ( motor_ptr ) {
-        return motor_ptr->connected();
-    }
-    return( false );
-}
-
-void Motor_run_timed ( const char *motor_port, long time_ms, int16_t power )
-{
-    motor *motor_ptr = find_motor_in_list( std::string(motor_port) );
-
-    if ( motor_ptr ) {
-        motor_ptr->set_time_sp( time_ms );
-        motor_ptr->set_duty_cycle_sp( power );
-        motor_ptr->run_timed();
-    }
-}
-
-void Motor_run_forever ( const char *motor_port, int16_t power )
-{
-    motor *motor_ptr = find_motor_in_list( std::string(motor_port) );
-
-    if ( motor_ptr ) {
-        motor_ptr->set_duty_cycle_sp( power );
-        motor_ptr->run_forever();
-    }
-}
-
-void Motor_stop ( const char *motor_port )
-{
-    motor *motor_ptr = find_motor_in_list( std::string(motor_port) );
-
-    if ( motor_ptr ) {
-        motor_ptr->stop();
-    }
-}
-
-}
