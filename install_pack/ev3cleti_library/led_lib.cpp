@@ -1,5 +1,65 @@
 #include <led.h>
 
+#define clip_arg(n, lower, upper) red = red > upper ? upper : red < lower ? lower : red;
+
+extern "C" {
+
+#include <ev3_led.h>
+
+void Led_set_color ( Led_side_t side, float red, float green )
+{
+    using namespace std;
+
+    clip_arg( red, 0.0f, 1.0f );
+    clip_arg( green, 0.0f, 1.0f );
+
+    switch ( side ) {
+        case RIGHT:
+            led::set_color( led::right, { red, green } );
+            break;
+
+        case LEFT:
+            led::set_color( led::left, { red, green } );
+            break;
+    }
+}
+
+void Led_set_flash ( Led_side_t side, Led_main_color_t mcolor, unsigned int on_ms, unsigned int off_ms )
+{
+    led *red = nullptr,
+        *green = nullptr;
+
+    switch ( side ) {
+        case RIGHT:
+            red = &led::red_right;
+            green = &led::green_right;
+            break;
+
+        case LEFT:
+            red = &led::red_left;
+            green = &led::green_left;
+            break;
+
+        default:
+            return;
+    }
+
+    switch ( mcolor ) {
+        case RED:
+            red->flash( on_ms, off_ms );
+            break;
+
+        case GREEN:
+            green->flash( on_ms, off_ms );
+            break;
+
+        default:
+            return;
+    }
+}
+
+}
+
 led::led(std::string name)
 {
     static const std::string _strClassDir { SYS_ROOT "/leds/" };
