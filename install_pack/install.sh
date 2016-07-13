@@ -11,5 +11,7 @@ SUBLIME_PACKAGE=sublime-text_build-3114_amd64.deb
 sudo dpkg -i $SUBLIME_PACKAGE
 cp EV3.sublime-build ~/.config/sublime-text-3/Packages/User
 
-make
-sudo make install
+LIBRARY_DIR=ev3cleti_library
+
+make -C $LIBRARY_DIR
+sudo make install -C $LIBRARY_DIR

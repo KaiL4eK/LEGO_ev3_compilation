@@ -7,14 +7,13 @@ sources = $(wildcard *.c)
 executes = $(basename $(sources))
 
 cross_compiler_directory = /usr/arm-linux-gnueabi
-ev3c_directory = /usr/local/ev3c
 ev3cleti_lib_directory = /usr/local/ev3cleti
 build_directory = build
 
-library_directory = $(cross_compiler_directory)/lib $(ev3c_directory)/lib $(ev3cleti_lib_directory)/lib
-include_directory = $(cross_compiler_directory)/include $(ev3c_directory)/include $(ev3cleti_lib_directory)/include
+library_directory = $(cross_compiler_directory)/lib $(ev3cleti_lib_directory)/lib
+include_directory = $(cross_compiler_directory)/include $(ev3cleti_lib_directory)/include
 
-libraries = ev3c ev3cleti stdc++ 
+libraries = ev3cleti stdc++ 
 
 cflags = $(addprefix -I, $(include_directory)) -Wall -O3
 ldflags = $(addprefix -L, $(library_directory)) $(addprefix -l, $(libraries))
