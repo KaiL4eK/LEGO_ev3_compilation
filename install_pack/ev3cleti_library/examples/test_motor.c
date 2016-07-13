@@ -1,9 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
-
 #include <unistd.h>
 
-#include <ev3_motor.h>
+#include <ev3_core.h>
 
 int main ( void )
 {

@@ -176,6 +176,11 @@ __CHECK_INIT
     }
 }
 
+typedef enum figure_fill_type_ {
+    FILL = 0,
+    BORDER
+}Figure_fill_type_t;
+
 void Lcd_draw_rectangle ( int16_t x, int16_t y, int16_t w, int16_t h, Pixel_color_t color, Figure_fill_type_t type )
 {
 __CHECK_INIT
@@ -211,6 +216,16 @@ __CHECK_INIT
     } else {
         return;
     }
+}
+
+void Lcd_draw_rectangle_filled ( int16_t x, int16_t y, int16_t w, int16_t h, Pixel_color_t color )
+{
+    Lcd_draw_rectangle( x, y, w, h, color, FILL );
+}
+
+void Lcd_draw_rectangle_edged ( int16_t x, int16_t y, int16_t w, int16_t h, Pixel_color_t color )
+{
+    Lcd_draw_rectangle( x, y, w, h, color, BORDER );
 }
 
 #define MIRROR_PIXEL(a,b,color) \
