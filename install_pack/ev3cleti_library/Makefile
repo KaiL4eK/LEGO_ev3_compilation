@@ -52,7 +52,7 @@ all: $(build_directory) $(library_static_file)
 $(library_static_file): $(objects_library)
 	$(AR) rcs $@ $^
 
-examples: $(execute_files)
+examples: all $(execute_files)
 
 $(execute_files): $(example_sources)
 	$(CC) -o $@ $(examples_directory)/$(notdir $@.c) $(cflags) $(ldflags)
