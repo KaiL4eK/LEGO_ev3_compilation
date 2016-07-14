@@ -1,5 +1,5 @@
 # Here set ip address for examples deploy 
-ip_robot_address = 0.0.0.0
+ip_robot_address = 10.42.0.12
 
 CC = arm-linux-gnueabi-gcc
 CXX = arm-linux-gnueabi-g++
@@ -63,14 +63,16 @@ $(build_directory)/%.o: %.c
 $(build_directory)/%.o: %.cpp
 	$(CXX) -c -o $@ $< $(cxxflags)
 
-install: all $(install_directory)
+install: all $(install_directory) installapp
 	cp -r $(public_directory)    $(install_directory)/$(headers_install_directory)
 	cp -r $(library_static_file) $(install_directory)/$(library_install_directory)
 	cp -r $(binary_directory)/*  $(install_directory)/$(binary_install_directory)
 	cp -r $(examples_directory)	 $(install_directory)/$(examples_install_directory)
 
-installapp:
-	sudo ln -s $(install_directory)/$(binary_install_directory) $(execute_link_file)
+installapp: $(execute_link_file)
+
+$(execute_link_file):
+	sudo ln -snf $(install_directory)/$(binary_install_directory)/newProject.sh $(execute_link_file)
 
 installex: examples
 	$(foreach executable, $(execute_files), scp $(executable) robot@$(ip_robot_address):~/$(notdir $(executable));)
@@ -86,4 +88,4 @@ clean:
 	rm -rf $(build_directory)
 
 distclean: clean
-	sudo rm -rf $(install_directory)
+	sudo rm -rf $(install_directory) $(execute_link_file)
