@@ -1,3 +1,4 @@
+include ../common.mk
 # 
 # Configurable area
 # 
@@ -6,8 +7,6 @@ ip_robot_address = 0.0.0.0
 sources = $(wildcard *.c)
 executes = $(basename $(sources))
 
-cross_compiler_directory = /usr/arm-linux-gnueabi
-ev3cleti_lib_directory = /usr/local/ev3cleti
 build_directory = build
 
 library_directory = $(cross_compiler_directory)/lib $(ev3cleti_lib_directory)/lib
@@ -17,8 +16,6 @@ libraries = ev3cleti stdc++
 
 cflags = $(addprefix -I, $(include_directory)) -Wall -O3
 ldflags = $(addprefix -L, $(library_directory)) $(addprefix -l, $(libraries)) -static
-
-CC = arm-linux-gnueabi-gcc
 
 execute_files = $(addprefix $(build_directory)/, $(executes))
 
