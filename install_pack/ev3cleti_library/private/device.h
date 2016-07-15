@@ -16,6 +16,8 @@
 
 #include <ev3_ports.h>
 
+#include <common.h>
+
 #ifndef SYS_ROOT
 #define SYS_ROOT "/sys/class"
 #endif

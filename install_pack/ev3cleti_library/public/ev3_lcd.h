@@ -18,6 +18,7 @@ typedef enum font_size_ {
 
 void Lcd_release ( void );
 void Lcd_clear( void );
+void Lcd_text_dig(int16_t x, int16_t y, const int var, Font_size_t size);
 void Lcd_text ( int16_t x, int16_t y, const char *text, Font_size_t size );
 void Lcd_draw_rectangle_filled ( int16_t x, int16_t y, int16_t w, int16_t h, Pixel_color_t color );
 void Lcd_draw_rectangle_edged ( int16_t x, int16_t y, int16_t w, int16_t h, Pixel_color_t color );

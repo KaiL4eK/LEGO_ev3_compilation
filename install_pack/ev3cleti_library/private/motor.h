@@ -161,6 +161,7 @@ public:
   // the motor to rotate in reverse.
   int duty_cycle_sp() const { return get_attr_int("duty_cycle_sp"); }
   auto set_duty_cycle_sp(int v) -> decltype(*this) {
+    clip_arg(v, -100, 100);
     set_attr_int("duty_cycle_sp", v);
     return *this;
   }

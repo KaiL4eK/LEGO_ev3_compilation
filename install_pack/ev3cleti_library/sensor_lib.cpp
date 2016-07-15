@@ -23,44 +23,87 @@ SensorClass *get_sensor_ptr( std::string port )
     }
 }
 
-extern "C" {
-
-#include <ev3_sensor.h>
-#include <ev3_ports.h>
-
-float UltraSonicSensor_read_cm ( const char *sensor_port )
+extern "C" 
 {
-    ultrasonic_sensor *us_ptr = get_sensor_ptr<ultrasonic_sensor>( std::string( sensor_port ) );
 
-    return( us_ptr->distance_centimeters() );
-}
+  #include <ev3_sensor.h>
+  #include <ev3_ports.h>
 
-float LightSensor_read_percent ( const char *sensor_port, Light_s_mode_t mode )
-{
-    light_sensor *light_ptr = get_sensor_ptr<light_sensor>( std::string( sensor_port ) );
+  ////////////////////////////////
+  //**UltraSonic
+  ////////////////////////////////
+  float UltraSonicSensor_read_cm ( const char *sensor_port )
+  {
+      ultrasonic_sensor *us_ptr = get_sensor_ptr<ultrasonic_sensor>( std::string( sensor_port ) );
 
-    if ( mode == REFLECT )
-        return( light_ptr->reflected_light_intensity() );
-    else if ( mode == AMBIENT )
-        return( light_ptr->ambient_light_intensity() );
-    else
-        return( 0.0f );
-}
+      return( us_ptr->distance_centimeters() );
+  }
 
-bool TouchSensor_isPressed ( const char *sensor_port )
-{
-    touch_sensor *touch_ptr = get_sensor_ptr<touch_sensor>( std::string( sensor_port ) );
+  ////////////////////////////////
+  //**LightSonic
+  ////////////////////////////////
+  float LightSensor_read_percent ( const char *sensor_port, Light_s_mode_t mode )
+  {
+      light_sensor *light_ptr = get_sensor_ptr<light_sensor>( std::string( sensor_port ) );
 
-    return( touch_ptr->is_pressed() );
-}
+      if ( mode == REFLECT )
+          return( light_ptr->reflected_light_intensity() );
+      else if ( mode == AMBIENT )
+          return( light_ptr->ambient_light_intensity() );
+      else
+          return( 0.0f );
+  }
 
-Color_s_color_t ColorSensor_get_color ( const char *sensor_port )
-{
-    color_sensor *color_ptr = get_sensor_ptr<color_sensor>( std::string( sensor_port ) );
+  ////////////////////////////////-------
+  //**TouchSonic
+  ////////////////////////////////
+  bool TouchSensor_isPressed ( const char *sensor_port )
+  {
+      touch_sensor *touch_ptr = get_sensor_ptr<touch_sensor>( std::string( sensor_port ) );
 
-    int color = color_ptr->color();
-    return( (color > COLOR_BROWN || color <= COLOR_NO) ? COLOR_NO : (Color_s_color_t)color );
-}
+      if(!touch_ptr)
+        return 0;
+
+      return( touch_ptr->is_pressed() );
+  }
+
+  bool TouchSensor_Clicked ( const char *sensor_port)
+  {
+
+      touch_sensor *touch_ptr = get_sensor_ptr<touch_sensor>(std::string(sensor_port ) );
+
+      if(!touch_ptr)
+        return 0;
+
+      return (touch_ptr->Clicked());
+
+  }
+
+  ////////////////////////////////
+  //**ColorSonic
+  ////////////////////////////////
+  Color_s_color_t ColorSensor_get_color ( const char *sensor_port )
+  {
+      color_sensor *color_ptr = get_sensor_ptr<color_sensor>( std::string( sensor_port ) );
+
+      int color = color_ptr->color();
+      return( (color > COLOR_BROWN || color <= COLOR_NO) ? COLOR_NO : (Color_s_color_t)color );
+  }
+
+  uint8_t ColorSensor_get_reflected_light( const char *sensor_port)
+  {
+
+    color_sensor *CSensorPtr = get_sensor_ptr<color_sensor>(std::string(sensor_port));
+
+    if(CSensorPtr)
+    {
+
+      
+      
+    }
+
+  }
+
 
 }
 

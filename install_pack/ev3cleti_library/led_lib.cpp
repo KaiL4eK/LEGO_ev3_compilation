@@ -1,6 +1,6 @@
 #include <led.h>
 
-#define clip_arg(n, lower, upper) red = red > upper ? upper : red < lower ? lower : red;
+
 
 extern "C" {
 

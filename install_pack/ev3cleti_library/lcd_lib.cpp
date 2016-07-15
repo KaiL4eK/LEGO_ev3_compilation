@@ -176,6 +176,17 @@ __CHECK_INIT
     }
 }
 
+void Lcd_text_dig(int16_t x, int16_t y, const int var, Font_size_t size)
+{
+
+    char Buffer[8];
+
+    sprintf(Buffer, "%d", var);
+
+    Lcd_text(x,y,Buffer,size);
+
+}
+
 typedef enum figure_fill_type_ {
     FILL = 0,
     BORDER

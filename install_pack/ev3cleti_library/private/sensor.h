@@ -157,6 +157,9 @@ public:
 
 //-----------------------------------------------------------------------------
 
+#define TS_DEFAULT 0
+#define TS_PRESSED 1
+
 // Touch Sensor
 class touch_sensor : public sensor
 {
@@ -169,10 +172,34 @@ public:
 
   // A boolean indicating whether the current touch sensor is being
   // pressed.
-  bool is_pressed() {
+  bool is_pressed() 
+  {
     set_mode(mode_touch);
     return value(0);
   }
+
+  // Return true, if sensor was pressed and released
+  bool Clicked()
+  {
+
+    if(this->Status == TS_DEFAULT && this->is_pressed())
+    {
+      this->Status = TS_PRESSED;
+      return 0;
+    }
+    if(this->Status == TS_PRESSED && !this->is_pressed())
+    {
+      this->Status = TS_DEFAULT;
+      return 1;
+    }
+
+    return 0;
+
+  }
+
+private:
+
+  char Status;
 
 };
 
@@ -226,6 +253,15 @@ public:
     return value(0);
   }
 
+  // Returns ReflectedLight
+  int8_t GetReflectColor()
+  {
+
+    set_mode(mode_col_reflect);
+    return value(0);
+
+  }
+
   // Red component of the detected color, in the range 0-1020.
   int red() {
     set_mode(mode_rgb_raw);
@@ -243,6 +279,11 @@ public:
     set_mode(mode_rgb_raw);
     return value(2);
   }
+
+private:
+
+  //Contains last detected light reflect
+  int8_t LReflectedLight;
 
 };
 

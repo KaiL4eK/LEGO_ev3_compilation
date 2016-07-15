@@ -17,9 +17,22 @@ typedef enum color_s_color_ {
    COLOR_BROWN = 7
 }Color_s_color_t;
 
+////////////////////////////////
+//**UltraSonic
+////////////////////////////////
 float UltraSonicSensor_read_cm ( const char *sensor_port );
+////////////////////////////////
+//**LightSonic
+////////////////////////////////
 float LightSensor_read_percent ( const char *sensor_port, Light_s_mode_t mode );
+////////////////////////////////
+//**TouchSonic
+////////////////////////////////
 bool TouchSensor_isPressed ( const char *sensor_port );
+bool TouchSensor_Clicked ( const char *sensor_port);
+////////////////////////////////
+//**ColorSonic
+////////////////////////////////
 Color_s_color_t ColorSensor_get_color ( const char *sensor_port );
 
 #endif //EV3_SENSOR_H_
