@@ -254,11 +254,12 @@ public:
   }
 
   // Returns ReflectedLight
-  int8_t GetReflectColor()
+  int8_t reflect()
   {
 
     set_mode(mode_col_reflect);
-    return value(0);
+    this->l_reflect_light = value(0);
+    return this->l_reflect_light;
 
   }
 
@@ -283,7 +284,7 @@ public:
 private:
 
   //Contains last detected light reflect
-  int8_t LReflectedLight;
+  int8_t l_reflect_light;
 
 };
 

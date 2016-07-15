@@ -30,7 +30,7 @@ extern "C"
   #include <ev3_ports.h>
 
   ////////////////////////////////
-  //**UltraSonic
+  //**UltraSensor
   ////////////////////////////////
   float UltraSonicSensor_read_cm ( const char *sensor_port )
   {
@@ -40,7 +40,7 @@ extern "C"
   }
 
   ////////////////////////////////
-  //**LightSonic
+  //**LightSensor
   ////////////////////////////////
   float LightSensor_read_percent ( const char *sensor_port, Light_s_mode_t mode )
   {
@@ -54,8 +54,8 @@ extern "C"
           return( 0.0f );
   }
 
-  ////////////////////////////////-------
-  //**TouchSonic
+  ////////////////////////////////
+  //**TouchSensor
   ////////////////////////////////
   bool TouchSensor_isPressed ( const char *sensor_port )
   {
@@ -80,7 +80,7 @@ extern "C"
   }
 
   ////////////////////////////////
-  //**ColorSonic
+  //**ColorSensor
   ////////////////////////////////
   Color_s_color_t ColorSensor_get_color ( const char *sensor_port )
   {
@@ -98,9 +98,11 @@ extern "C"
     if(CSensorPtr)
     {
 
-      
+      return CSensorPtr->reflect();
       
     }
+
+    return 0;
 
   }
 
@@ -121,7 +123,7 @@ sensor::sensor(address_type address, const std::set<sensor_type> &types)
   connect({{ "address", { address }},
            { "driver_name", types }});
 }
-
+ 
 //-----------------------------------------------------------------------------
 
 bool sensor::connect(const std::map<std::string, std::set<std::string>> &match) noexcept

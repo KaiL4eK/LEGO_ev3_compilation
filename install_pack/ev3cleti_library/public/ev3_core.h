@@ -15,6 +15,7 @@ extern "C" {
 	#include <ev3_sound.h>
 	#include <ev3_sensor.h>
 	#include <ev3_led.h>
+	#include <ev3_timer.h>
 
 #ifdef __cplusplus
 }
