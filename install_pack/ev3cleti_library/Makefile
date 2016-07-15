@@ -63,11 +63,11 @@ $(build_directory)/%.o: %.c
 $(build_directory)/%.o: %.cpp
 	$(CXX) -c -o $@ $< $(cxxflags)
 
-install: all $(install_directory) installapp
-	cp -r $(public_directory)    $(install_directory)/$(headers_install_directory)
-	cp -r $(library_static_file) $(install_directory)/$(library_install_directory)
-	cp -r $(binary_directory)/*  $(install_directory)/$(binary_install_directory)
-	cp -r $(examples_directory)	 $(install_directory)/$(examples_install_directory)
+install: all $(install_directory)
+	cp -r $(public_directory)    $(install_directory)/$(headers_install_directory)/
+	cp -r $(library_static_file) $(install_directory)/$(library_install_directory)/
+	cp -r $(binary_directory)/*  $(install_directory)/$(binary_install_directory)/
+	cp -r $(examples_directory)	 $(install_directory)/$(examples_install_directory)/
 
 installapp: $(execute_link_file)
 
