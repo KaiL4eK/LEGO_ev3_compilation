@@ -19,13 +19,15 @@ read -d '' makefile_text <<"EOF"
 # 
 # Configurable area
 # 
+
+# This must be set to robots ip
 ip_robot_address = __ip_address
 execute_name = __project_name
 
 objects = $(patsubst %.c,%.o,$(wildcard *.c))
 
 cross_compiler_directory = /usr/arm-linux-gnueabi
-ev3cleti_lib_directory = /usr/local/ev3cleti
+ev3cleti_lib_directory = $(HOME)/ev3cleti
 build_directory = build
 
 library_directory = $(cross_compiler_directory)/lib $(ev3cleti_lib_directory)/lib
