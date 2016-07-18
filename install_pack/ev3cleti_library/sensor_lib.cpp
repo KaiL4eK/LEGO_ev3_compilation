@@ -39,6 +39,38 @@ extern "C"
       return( us_ptr->distance_centimeters() );
   }
 
+  float UltraSonicSensor_read_in (const char* sensor_port)
+  {
+
+    ultrasonic_sensor *USSensor = get_sensor_ptr<ultrasonic_sensor>(std::string(sensor_port));
+
+    return (USSensor->distance_inches());
+
+  } 
+
+  uint8_t UltraSonicSensor_is_noise_here(const char* sensor_port)
+  {
+
+    ultrasonic_sensor *USSensor = get_sensor_ptr<ultrasonic_sensor>(std::string(sensor_port));
+    return (USSensor->other_sensor_present());
+
+  }
+
+  float UltraSonicSensor_read_cm_sm(const char* sensor_port)
+  {
+
+    ultrasonic_sensor *USSensor = get_sensor_ptr<ultrasonic_sensor>(std::string(sensor_port));
+    return (USSensor->distance_centimeters_sm());
+
+  }
+
+  float UltraSonicSensor_read_in_sm(const char* sensor_port)
+  {
+
+    ultrasonic_sensor *USSensor = get_sensor_ptr<ultrasonic_sensor>(std::string(sensor_port));
+    return (USSensor->distance_inches_sm());
+  }
+
   ////////////////////////////////
   //**LightSensor
   ////////////////////////////////
@@ -106,6 +138,63 @@ extern "C"
 
   }
 
+  uint8_t ColorSensor_get_ambient_light(const char* sensor_port)
+  {
+
+    color_sensor *CSensorPtr = get_sensor_ptr<color_sensor>(std::string(sensor_port));
+
+    if(CSensorPtr)
+      return CSensorPtr->ambient();
+
+    return 0;
+
+  }
+
+  void ColorSensor_calibrate(const char* sensor_port)
+  {
+
+   /* color_sensor *CSensorPtr = get_sensor_ptr<color_sensor>(std::string(sensor_port));
+
+    if(CSensorPtr)
+      CSensorPtr->reset();*/
+
+  }
+
+  ////////////////////////////////
+  //**GyroSensor
+  ////////////////////////////////
+  int16_t gyro_sensor_angle(const char* sensor_port)
+  {
+
+    gyro_sensor* GSensor = get_sensor_ptr<gyro_sensor>(std::string(sensor_port));
+
+    return GSensor->angle();
+
+  }
+
+  int16_t gyro_sensor_rate(const char* sensor_port)
+  {
+
+    gyro_sensor* GSensor = get_sensor_ptr<gyro_sensor>(std::string(sensor_port));
+
+    return GSensor->rate();
+
+  }
+
+  void gyro_sensor_calibrate(const char* sensor_port)
+  {
+
+    gyro_sensor* GSensor = get_sensor_ptr<gyro_sensor>(std::string(sensor_port));
+
+    return GSensor->calibrate();
+  }
+
+  uint16_t gyro_sensor_angle_bearing(const char* sensor_port)
+  {
+
+    return gyro_sensor_angle(sensor_port) % 360;
+
+  }
 
 }
 

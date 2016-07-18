@@ -21,6 +21,10 @@ typedef enum color_s_color_ {
 //**UltraSensor
 ////////////////////////////////
 float UltraSonicSensor_read_cm ( const char *sensor_port );
+float UltraSonicSensor_read_in (const char* sensor_port);
+uint8_t  UltraSonicSensor_is_noise_here(const char* sensor_port);
+float UltraSonicSensor_read_cm_sm(const char* sensor_port);
+float UltraSonicSensor_read_in_sm(const char* sensor_port);
 ////////////////////////////////
 //**LightSensor
 ////////////////////////////////
@@ -35,5 +39,15 @@ bool TouchSensor_Clicked ( const char *sensor_port);
 ////////////////////////////////
 Color_s_color_t ColorSensor_get_color ( const char *sensor_port );
 uint8_t ColorSensor_get_reflected_light(const char *sensor_port);
+uint8_t ColorSensor_get_ambient_light(const char* sensor_port);
+//void ColorSensor_calibrate(const char* sensor_port);
+
+////////////////////////////////
+//**GyroSensor
+////////////////////////////////
+int16_t gyro_sensor_angle(const char* sensor_port);
+int16_t gyro_sensor_rate(const char* sensor_port);
+//uint16_t gyro_sensor_angle_bearing(const char* sensor_port);
+void gyro_sensor_calibrate(const char* sensor_port);
 
 #endif //EV3_SENSOR_H_

@@ -1,16 +1,16 @@
-#ifndef D3DAPPTIMER_H
-#define D3DAPPTIMER_H
+#ifndef TIMER_H
+#define TIMER_H
 
 #include <stdlib.h>
 #include <unistd.h>
 #include <time.h>
 
-class D3DAPPTIMER
+class timer
 {
 public:
 
-	D3DAPPTIMER(float timeScale);
-	~D3DAPPTIMER();
+	timer(float timeScale);
+	~timer();
 
 	// Reset Timer
 	void Reset();
@@ -33,18 +33,18 @@ public:
 	// Return non-Pause Time
 	float GetTotalTime() { return this->TotalTime; }
 	
-	float GetSecondsPerCount() { return this->SecondsPerCount; }
+	clock_t GetSecondsPerCount() { return this->SecondsPerCount; }
 	void ComputeSecondsPerCount();
 	
 	float GetTimeScale() { return this->Scale; }
 	
 	//Return seconds in one cycle
-	float GetDeltaTime() { return this->DeltaTime; }
+	clock_t GetDeltaTime() { return this->DeltaTime; }
 	
 	void ComputeCurrTime() { this->CurrTime = clock(); }
 	
 	//Return Time (Processor cycles) 
-	double& GetCurrTime() { return this->CurrTime; }
+	clock_t& GetCurrTime() { return this->CurrTime; }
 
 	
 	bool GetIsStoped() { return this->IsInPause; }
@@ -57,13 +57,13 @@ private:
 	//**Processor Counts
 	///////////////////////////////////
 	// Current Time
-	double CurrTime;
+	clock_t CurrTime;
 	// Previous Time
-	double PrevTime;
+	clock_t PrevTime;
 	// Start Time
-	double BaseTime;
+	clock_t BaseTime;
 	// Stop Time
-	double StopTime;
+	clock_t StopTime;
 	// In Pause Time
 	double PauseTime;
 	// In Previuos Pause Time
@@ -92,4 +92,4 @@ private:
 	bool IsInPause;
 };
 
-#endif
+#endif //!TIMER_H

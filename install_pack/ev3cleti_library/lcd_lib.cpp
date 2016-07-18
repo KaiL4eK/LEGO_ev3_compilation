@@ -176,7 +176,7 @@ __CHECK_INIT
     }
 }
 
-void Lcd_text_dig(int16_t x, int16_t y, const int var, Font_size_t size)
+void Lcd_text_dig(int16_t x, int16_t y, const int32_t var, Font_size_t size)
 {
 
     char Buffer[8];

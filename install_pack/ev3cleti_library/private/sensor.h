@@ -95,6 +95,15 @@ public:
   // sensors] for a complete list of drivers.
   std::string driver_name() const { return get_attr_string("driver_name"); }
 
+  //
+  bool check_mode(std::string mode_to_check)
+  {
+    if(!this->mode().compare(mode_to_check))
+      return true;
+    else
+      return false;
+  }
+
   // Mode: read/write
   // Returns the current mode. Writing one of the values returned by `modes`
   // sets the sensor to that mode.
@@ -226,6 +235,9 @@ public:
   // Raw Color Components. All LEDs rapidly cycling, appears white.
   static constexpr char mode_rgb_raw[] = "RGB-RAW";
 
+  // Calibration
+  //static constexpr char mode_col_cal[] = "COL-CAL";
+
 
   // Reflected light intensity as a percentage. Light on sensor is red.
   int reflected_light_intensity() {
@@ -254,12 +266,21 @@ public:
   }
 
   // Returns ReflectedLight
-  int8_t reflect()
+  uint8_t reflect()
   {
 
     set_mode(mode_col_reflect);
     this->l_reflect_light = value(0);
     return this->l_reflect_light;
+
+  }
+
+  // Returns Ambient light
+  uint8_t ambient()
+  {
+
+    set_mode(mode_col_ambient);
+    return this->value(0);
 
   }
 
@@ -284,7 +305,7 @@ public:
 private:
 
   //Contains last detected light reflect
-  int8_t l_reflect_light;
+  uint8_t l_reflect_light;
 
 };
 
@@ -315,22 +336,42 @@ public:
   // Measurement of the distance detected by the sensor,
   // in centimeters.
   float distance_centimeters() {
-    set_mode(mode_us_dist_cm);
+    if(!this->check_mode(mode_us_dist_cm))
+        set_mode(mode_us_dist_cm);
     return float_value(0);
   }
 
   // Measurement of the distance detected by the sensor,
   // in inches.
   float distance_inches() {
-    set_mode(mode_us_dist_in);
+    if(!this->check_mode(mode_us_dist_in))
+        set_mode(mode_us_dist_in);
     return float_value(0);
   }
 
   // Value indicating whether another ultrasonic sensor could
   // be heard nearby.
   bool other_sensor_present() {
-    set_mode(mode_us_listen);
+    if(!this->check_mode(mode_us_listen))
+        set_mode(mode_us_listen);
     return value(0);
+  }
+
+  //Reterns measurement of distence detected by the sensor,
+  //in centimeters
+  //Use Single measurement mode
+  float distance_centimeters_sm()
+  {
+    set_mode(mode_us_si_cm);
+    return float_value(0);
+  }
+
+  //Reterns measurement of distence detected by the sensor, in inches
+  //Use Single measurement mode
+  float distance_inches_sm()
+  {
+    set_mode(mode_us_si_in);
+    return float_value(0);
   }
 
 };
@@ -362,14 +403,39 @@ public:
   // The number of degrees that the sensor has been rotated
   // since it was put into this mode.
   int angle() {
-    set_mode(mode_gyro_ang);
+    if(!check_mode(mode_gyro_ang))
+      set_mode(mode_gyro_ang);
     return value(0);
   }
 
   // The rate at which the sensor is rotating, in degrees/second.
   int rate() {
-    set_mode(mode_gyro_rate);
+    if(!check_mode(mode_gyro_rate))
+      set_mode(mode_gyro_rate);
     return value(0);
+  }
+
+  struct INT162d
+  {
+    int16_t angle;
+    int16_t rate;
+  };
+
+  INT162d ange_rate()
+  {
+    if(!check_mode(mode_gyro_g_a))
+      set_mode(mode_gyro_g_a);
+
+    INT162d Out;
+    Out.angle = value(0);
+    Out.rate = value(1);
+
+    return Out;
+  }
+
+  void calibrate()
+  {
+    set_mode(mode_gyro_cal);
   }
 
 };

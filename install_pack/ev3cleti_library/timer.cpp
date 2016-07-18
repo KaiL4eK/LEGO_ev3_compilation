@@ -1,16 +1,16 @@
 #include <timer.h>
 
-D3DAPPTIMER::D3DAPPTIMER(float timeScale)
+timer::timer(float timeScale)
 {
 	this->Scale = timeScale;
 }
 
-D3DAPPTIMER::~D3DAPPTIMER()
+timer::~timer()
 {
 
 }
 
-void D3DAPPTIMER::Tick()
+void timer::Tick()
 {
 
 	
@@ -49,7 +49,7 @@ void D3DAPPTIMER::Tick()
 
 }
 
-void D3DAPPTIMER::Reset()
+void timer::Reset()
 {
 	this->ComputeCurrTime();
 	this->BaseTime = this->CurrTime;
@@ -62,7 +62,7 @@ void D3DAPPTIMER::Reset()
 	this->FrameCnt = 0;
 }
 
-void D3DAPPTIMER::Resume()
+void timer::Resume()
 {
 	this->ComputeCurrTime();
 	this->PauseTime = this->CurrTime - this->StopTime + this->PrevPauseTime;
@@ -70,14 +70,14 @@ void D3DAPPTIMER::Resume()
 	this->IsInPause = false;
 }
 
-void D3DAPPTIMER::Stop()
+void timer::Stop()
 {
 	this->ComputeCurrTime();
 	this->StopTime = this->CurrTime;
 	this->IsInPause = true;
 }
 
-void D3DAPPTIMER::ComputeSecondsPerCount()
+void timer::ComputeSecondsPerCount()
 {
 
 	//QueryPerformanceFrequency((LARGE_INTEGER*)&this->CountsPerSecond);
@@ -86,7 +86,7 @@ void D3DAPPTIMER::ComputeSecondsPerCount()
 
 }
 
-float D3DAPPTIMER::GetPauseTime()
+float timer::GetPauseTime()
 {
 
 	this->ComputeSecondsPerCount();
@@ -94,19 +94,19 @@ float D3DAPPTIMER::GetPauseTime()
 
 }
 
-D3DAPPTIMER* Timer;
+timer* Timer;
 
 extern "C"
 {
 
-	void TimerInit()
+	void timer_init()
 	{
 
-		Timer = new D3DAPPTIMER(1.f);
+		Timer = new timer(1.f);
 
 	}
 
-	void TimerStart()
+	void timer_start()
 	{
 
 		if(Timer)
@@ -118,7 +118,7 @@ extern "C"
 
 	}
 
-	float GetTime()
+	float timer_get_time()
 	{
 
 		if(Timer)
@@ -131,7 +131,7 @@ extern "C"
 
 	}
 
-	void TimerClose()
+	void timer_close()
 	{
 
 		if(Timer)
@@ -144,9 +144,8 @@ extern "C"
 
 	}
 
-	void TimerUpdate()
+	void timer_update()
 	{
-
 
 		if(Timer)
 		{

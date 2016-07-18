@@ -43,6 +43,28 @@ extern "C"
         motor_ptr->run_timed();
     }
 
+    void Motor_run_to_rel_pos( const char* motor_port, int32_t pos, int8_t power )
+    {
+
+        motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
+
+        motor_ptr->set_duty_cycle_sp( power );
+        motor_ptr->set_position_sp(pos);
+        motor_ptr->run_to_rel_pos();
+
+    }
+
+    void Motor_run_to_abs_pos( const char* motor_port, int32_t pos, int8_t power )
+    {
+
+        motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
+
+        motor_ptr->set_duty_cycle_sp( power );
+        motor_ptr->set_position_sp(pos);
+        motor_ptr->run_to_abs_pos();
+
+    }
+
     void Motor_run_forever ( const char *motor_port, int16_t power )
     {
         motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
@@ -63,6 +85,33 @@ extern "C"
         for (auto m_ptr : motors_list) {
             m_ptr.second->reset();
         }
+    }
+
+    int32_t Motor_get_position ( const char *motor_port)
+    {
+
+        motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
+
+        return motor_ptr->position();
+
+    }
+
+    void Motor_reset_position(const char *motor_port)
+    {
+        motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
+        motor_ptr->set_position(0);
+    }
+
+    void SetPID(const char *motor_port, int p, int i, int d)
+    {
+
+        motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
+        if(!motor_ptr)
+            return;
+        motor_ptr->set_position_p(p);
+        motor_ptr->set_position_i(i);
+        motor_ptr->set_position_d(d);
+
     }
 
 }
