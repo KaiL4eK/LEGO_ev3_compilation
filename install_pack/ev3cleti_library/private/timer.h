@@ -4,6 +4,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <time.h>
+#include <thread>
+#include <mutex>
+#include <functional>
+#include <algorithm>
 
 class timer
 {
@@ -81,7 +85,6 @@ private:
 	float TotalTime;
 	
 	float DeltaTime;
-	float DeltaCounts;
 
 private:
 

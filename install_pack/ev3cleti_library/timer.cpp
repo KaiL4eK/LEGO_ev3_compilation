@@ -28,7 +28,7 @@ void timer::Tick()
 	/////////////////////////
 	//DeltaTime
 	/////////////////////////
-	this->DeltaTime = (this->DeltaCounts) * this->SecondsPerCount;
+	this->DeltaTime = (this->CurrTime - this->BaseTime) * this->SecondsPerCount;
 
 	this->PrevTime = this->CurrTime;
 
@@ -78,7 +78,7 @@ void timer::ComputeSecondsPerCount()
 {
 
 	//QueryPerformanceFrequency((LARGE_INTEGER*)&this->CountsPerSecond);
-	clock();
+	clock(); 
 	this->SecondsPerCount = 1.f/ CLOCKS_PER_SEC * Scale;
 
 }
@@ -91,44 +91,75 @@ float timer::GetPauseTime()
 
 }
 
+void ThreadTimeDelay(int seconds, short& ready)
+{
+
+    timer* CTimer = new timer(0.5f);
+
+    CTimer->Reset();
+    do
+    {
+        CTimer->Tick();
+
+    }while(CTimer->GetTotalTime() < seconds);
+
+    delete CTimer;
+
+    ready = 1;
+
+}
+
+void ThreadTimerGetTime(uint8_t& command, float& time)
+{
+
+    timer* CTimer = new timer(0.5f);
+
+    CTimer->Reset();
+    do
+    {
+        if(command == 1)
+            break;
+        CTimer->Tick();
+        time = CTimer->GetTotalTime();
+
+    }while(true);
+
+    command = 0;
+    delete CTimer;
+}
+
 timer* Timer;
+
+uint8_t Command = 0;
 
 extern "C"
 {
 
-	void timer_init()
+	void Timer_reset()
 	{
 
-		Timer = new timer(1.f);
+		if(!Timer)
+			Timer = new timer(1.f);	
+		Timer->Reset();
 
 	}
 
-	void timer_start()
+	float Timer_get_time()
 	{
 
-		if(Timer)
+		if(!Timer)
 		{
-
+			Timer = new timer(1.f);
 			Timer->Reset();
-
 		}
+
+		Timer->Tick();
+
+		return Timer->GetTotalTime();
 
 	}
 
-	float timer_get_time()
-	{
-
-		if(Timer)
-		{
-
-			return Timer->GetTotalTime();
-
-		}
-		return 0;
-
-	}
-
-	void timer_close()
+	void Timer_close()
 	{
 
 		if(Timer)
@@ -141,16 +172,46 @@ extern "C"
 
 	}
 
-	void timer_update()
+	///////////////////////////////////////
+	//**Timer funcs for parallel execution
+	//**This functions just for tests
+	//**I will rename them later
+	///////////////////////////////////////
+
+
+
+	/*short TimeDelay(int seconds)
 	{
 
-		if(Timer)
-		{
+	    static short Ready = 0;
+	    static bool Status = 0;
 
-			Timer->Tick();
+	    if(!Status)
+	    {
+	        std::thread ThTimeDelay(ThreadTimeDelay,seconds, std::ref(Ready));
+	        //ThTimeDelay.detach();
+	        Status = true;
+	    }
 
-		}
+	    return Ready;
 
 	}
+
+	float TimerGetTime()
+	{
+
+	    static bool Status;
+	    static float Time;
+
+	    if(!Status)
+	    {
+	        //std::thread Thread(ThreadTimerGetTime, std::ref(Command), std::ref(Time));
+	        //Thread.detach();
+	        Status = true;
+	    }
+
+	    return Time;
+
+	}*/
 
 }

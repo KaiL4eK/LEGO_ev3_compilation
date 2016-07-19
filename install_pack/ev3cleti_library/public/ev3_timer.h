@@ -1,10 +1,11 @@
 #ifndef TIMER_H
 #define TIMER_H
 
-void timer_init();
-void timer_start();
-float timer_get_time();
-void timer_close();
-void timer_update();
+void Timer_reset();
+float Timer_get_time();
+void Timer_close();
+
+//short TimeDelay(int seconds);
+//float TimerGetTime();
 
 #endif //!TIMER_H
