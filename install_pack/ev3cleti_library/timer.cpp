@@ -14,11 +14,8 @@ void timer::Tick()
 {
 
 	
-	this->ComputeCurrTime();
-
-	this->DeltaCounts = this->CurrTime - this->PrevTime;
-
 	this->ComputeSecondsPerCount();
+	this->ComputeCurrTime();
 
 	/////////////////////////
 	//TotalTime

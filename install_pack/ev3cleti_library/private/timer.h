@@ -33,18 +33,18 @@ public:
 	// Return non-Pause Time
 	float GetTotalTime() { return this->TotalTime; }
 	
-	clock_t GetSecondsPerCount() { return this->SecondsPerCount; }
+	int64_t GetSecondsPerCount() { return this->SecondsPerCount; }
 	void ComputeSecondsPerCount();
 	
 	float GetTimeScale() { return this->Scale; }
 	
 	//Return seconds in one cycle
-	clock_t GetDeltaTime() { return this->DeltaTime; }
+	int64_t GetDeltaTime() { return this->DeltaTime; }
 	
 	void ComputeCurrTime() { this->CurrTime = clock(); }
 	
 	//Return Time (Processor cycles) 
-	clock_t& GetCurrTime() { return this->CurrTime; }
+	int64_t& GetCurrTime() { return this->CurrTime; }
 
 	
 	bool GetIsStoped() { return this->IsInPause; }
@@ -57,19 +57,18 @@ private:
 	//**Processor Counts
 	///////////////////////////////////
 	// Current Time
-	clock_t CurrTime;
+	int64_t CurrTime;
 	// Previous Time
-	clock_t PrevTime;
+	int64_t PrevTime;
 	// Start Time
-	clock_t BaseTime;
+	int64_t BaseTime;
 	// Stop Time
-	clock_t StopTime;
+	int64_t StopTime;
 	// In Pause Time
-	double PauseTime;
+	int64_t PauseTime;
 	// In Previuos Pause Time
-	double PrevPauseTime;
+	int64_t PrevPauseTime;
 
-	double CountsPerSecond;
 	double SecondsPerCount;
 
 	///////////////////////////////////

@@ -6,12 +6,15 @@
 
 int main ( void )
 {
-    Lcd_clear();
+   Lcd_clear();
 
-    Lcd_text( 10, 80, "Large", LARGE );
-    Lcd_text( 100, 80, "Normal", NORMAL );
-    Lcd_text( 100, 90, "Small", SMALL );
-    Lcd_text( 100, 100, "Tiny", TINY );
+    Lcd_text( 10, 80, LARGE, "Large" );
+    Lcd_text( 100, 80, NORMAL, "Normal" );
+    Lcd_text( 100, 90, SMALL, "Small" );
+    Lcd_text( 100, 100, TINY, "Tiny" );
+
+    Lcd_text( 60, 10, NORMAL, "Int: %d;", 123);
+    Lcd_text( 60, 20, NORMAL, "Float: %f;", 1.23);
 
     sleep( 1 );
     Lcd_draw_rectangle_filled( 10, 30, 10, 40, BLACK );
@@ -29,7 +32,7 @@ int main ( void )
     Lcd_draw_line( 100, 30, 120, 50, BLACK );
     Lcd_draw_line( 100, 50, 120, 30, BLACK );
 
-    Lcd_text( 10, 110, "Press button to quit", NORMAL );
+    Lcd_text( 10, 110, NORMAL, "Press button to quit" );
     getchar();    
 
     Lcd_release();

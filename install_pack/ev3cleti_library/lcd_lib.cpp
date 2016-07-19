@@ -1,3 +1,4 @@
+#include <string>
 extern "C" {
 
 #include <stdint.h>
@@ -7,6 +8,7 @@ extern "C" {
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
+#include <stdarg.h>
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -100,7 +102,7 @@ __CHECK_INIT
 
 #define EV3_PIXEL(x,y,bit) { if (bit) EV3_PIXEL_SET(x,y); else EV3_PIXEL_UNSET(x,y); }
 
-void Lcd_text ( int16_t x, int16_t y, const char *text, Font_size_t size ) 
+void Lcd_render_text ( int16_t x, int16_t y,const char *text, Font_size_t size ) 
 {
 __CHECK_INIT
     int32_t i;
@@ -176,14 +178,49 @@ __CHECK_INIT
     }
 }
 
-void Lcd_text_dig(int16_t x, int16_t y, const int32_t var, Font_size_t size)
+void Lcd_text(int16_t x, int16_t y, Font_size_t size,const char *text, ...)
 {
 
-    char Buffer[8];
+    va_list Args;
+    va_start(Args, text);
 
-    sprintf(Buffer, "%d", var);
+    std::string Buffer;
 
-    Lcd_text(x,y,Buffer,size);
+    char Buf[8];
+
+    for (const char* ptr = text; *ptr != '\0'; ptr++)
+    {
+
+        if (*ptr == '%')
+        {
+            ptr++;
+
+            if (*ptr == 'd')
+            {
+
+                int Var = va_arg(Args, int);
+                sprintf(Buf, "%d", Var);
+                Buffer += Buf;
+
+            }
+            else if (*ptr == 'f')
+            {
+
+                float Var = va_arg(Args, double);
+                sprintf(Buf, "%4.2f", Var);
+                Buffer += Buf;
+
+            }
+
+        }
+        else
+        {
+            Buffer += *ptr;
+        }
+
+    }
+
+    Lcd_render_text(x,y,Buffer.c_str(),size);
 
 }
 
