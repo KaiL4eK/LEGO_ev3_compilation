@@ -37,6 +37,8 @@ extern "C"
     void Motor_run_timed ( const char *motor_port, long time_ms, int16_t power )
     {
         motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
+        if(!motor_ptr)
+            return;
 
         motor_ptr->set_time_sp( time_ms );
         motor_ptr->set_duty_cycle_sp( power );
@@ -47,6 +49,8 @@ extern "C"
     {
 
         motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
+        if(!motor_ptr)
+            return;
 
         motor_ptr->set_duty_cycle_sp( power );
         motor_ptr->set_position_sp(pos);
@@ -58,6 +62,8 @@ extern "C"
     {
 
         motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
+        if(!motor_ptr)
+            return;
 
         motor_ptr->set_duty_cycle_sp( power );
         motor_ptr->set_position_sp(pos);
@@ -68,6 +74,8 @@ extern "C"
     void Motor_run_forever ( const char *motor_port, int16_t power )
     {
         motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
+        if(!motor_ptr)
+            return;
 
         motor_ptr->set_duty_cycle_sp( power );
         motor_ptr->run_forever();
@@ -76,6 +84,8 @@ extern "C"
     void Motor_stop ( const char *motor_port )
     {
         motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
+        if(!motor_ptr)
+            return;
 
         motor_ptr->stop();
     }
@@ -91,6 +101,8 @@ extern "C"
     {
 
         motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
+        if(!motor_ptr)
+            return 0;
 
         return motor_ptr->position();
 
@@ -99,7 +111,29 @@ extern "C"
     void Motor_reset_position(const char *motor_port)
     {
         motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
+        if(!motor_ptr)
+            return;
         motor_ptr->set_position(0);
+    }
+
+    void Motor_reverse(const char* motor_port)
+    {
+        motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
+        if(!motor_ptr)
+            return;
+        motor_ptr->set_duty_cycle_sp(-1 * motor_ptr->duty_cycle_sp());
+        motor_ptr->run_forever();
+    }
+
+    float Motor_get_speed(const char* motor_port)
+    {
+
+        motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
+        if(!motor_ptr)
+            return 0;
+
+        return 360 * (float)motor_ptr->speed() / (float)motor_ptr->count_per_rot();
+
     }
 
     void SetPID(const char *motor_port, int p, int i, int d)
@@ -108,9 +142,25 @@ extern "C"
         motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
         if(!motor_ptr)
             return;
+        printf("P\n");
         motor_ptr->set_position_p(p);
+        printf("I\n");
         motor_ptr->set_position_i(i);
+        printf("D\n");
         motor_ptr->set_position_d(d);
+        printf("End\n");
+
+    }
+
+    void Motor_ramp(const char *motor_port, int up, int down)
+    {
+
+        motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
+        if(!motor_ptr)
+            return;
+
+        motor_ptr->set_ramp_up_sp(up);
+        motor_ptr->set_ramp_down_sp(down);        
 
     }
 

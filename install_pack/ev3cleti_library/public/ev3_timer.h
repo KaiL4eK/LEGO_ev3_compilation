@@ -7,5 +7,6 @@ void Timer_close();
 
 //short TimeDelay(int seconds);
 //float TimerGetTime();
+//void TimerStop();
 
 #endif //!TIMER_H

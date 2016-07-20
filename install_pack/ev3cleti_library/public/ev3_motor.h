@@ -10,5 +10,8 @@ int32_t Motor_get_position ( const char *motor_port);
 void Motor_reset_position(const char *motor_port);
 void Motor_run_to_rel_pos( const char* motor_port, int32_t pos, int8_t power  );
 void Motor_run_to_abs_pos( const char* motor_port, int32_t pos, int8_t power  );
-//void SetPID(const char *motor_port, int p, int i, int d);
+void Motor_reverse(const char* motor_port);
+float Motor_get_speed(const char* motor_port);
+//void Motor_ramp(const char *motor_port, int up, int down);
+//void SetPID(const char *motor_port, float p, float i, float d);
 #endif //EV3_MOTOR_H_

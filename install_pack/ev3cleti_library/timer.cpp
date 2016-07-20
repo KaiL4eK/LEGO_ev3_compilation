@@ -91,32 +91,32 @@ float timer::GetPauseTime()
 
 }
 
-void ThreadTimeDelay(int seconds, short& ready)
+#include <thread>
+#include <functional>
+#include <iostream>
+
+
+
+timer* Timer;
+
+uint8_t Command = 0;
+
+struct StrArgs
 {
-
-    timer* CTimer = new timer(0.5f);
-
-    CTimer->Reset();
-    do
-    {
-        CTimer->Tick();
-
-    }while(CTimer->GetTotalTime() < seconds);
-
-    delete CTimer;
-
-    ready = 1;
-
-}
+	uint8_t Command; 
+	float Time;
+};
 
 void ThreadTimerGetTime(uint8_t& command, float& time)
 {
-
+	//StrArgs* Args = (StrArgs*)args; 
+	printf("Hello, before new Timer\n");
     timer* CTimer = new timer(0.5f);
 
     CTimer->Reset();
     do
     {
+    	printf("Hello, before Timer Update\n");
         if(command == 1)
             break;
         CTimer->Tick();
@@ -124,16 +124,31 @@ void ThreadTimerGetTime(uint8_t& command, float& time)
 
     }while(true);
 
+	printf("Hello, afte Timer Exe\n");
     command = 0;
     delete CTimer;
 }
 
-timer* Timer;
-
-uint8_t Command = 0;
-
 extern "C"
 {
+
+	/*void ThreadTimeDelay(int seconds, short& ready)
+	{
+
+	    timer* CTimer = new timer(0.5f);
+
+	    CTimer->Reset();
+	    do
+	    {
+	        CTimer->Tick();
+
+	    }while(CTimer->GetTotalTime() < seconds);
+
+	    delete CTimer;
+
+	    ready = 1;
+
+	}*/
 
 	void Timer_reset()
 	{
@@ -177,9 +192,6 @@ extern "C"
 	//**This functions just for tests
 	//**I will rename them later
 	///////////////////////////////////////
-
-
-
 	/*short TimeDelay(int seconds)
 	{
 
@@ -195,6 +207,13 @@ extern "C"
 
 	    return Ready;
 
+	}*/
+
+	void TimerStop()
+	{
+
+		Command = 1;
+
 	}
 
 	float TimerGetTime()
@@ -203,15 +222,34 @@ extern "C"
 	    static bool Status;
 	    static float Time;
 
+	    //StrArgs Args;
+
+	    printf("Hello, before !Status\n");
 	    if(!Status)
 	    {
-	        //std::thread Thread(ThreadTimerGetTime, std::ref(Command), std::ref(Time));
+	    	printf("Hello, before threeead\n");
+	    	//pthread_t Thread;
+	    	//pthread_create(&Thread, NULL, ThreadTimerGetTime, (void*)&(Args));
+	        std::thread Thread(ThreadTimerGetTime, std::ref(Command), std::ref(Time));
+	        printf("Hello, before detach\n");
 	        //Thread.detach();
+	        printf("Hello, after detach\n");
 	        Status = true;
 	    }
-
+	    printf("Hello, before Return time\n");	
 	    return Time;
 
-	}*/
+	    /*static bool Status = 0;
+	    static float Time;
+
+	    if(!Timer)
+		{
+			Timer = new timer(1.f);
+			Timer->Reset();
+		}
+
+		return Timer->ThGetTime(Command, Time, Status);*/
+
+	}
 
 }

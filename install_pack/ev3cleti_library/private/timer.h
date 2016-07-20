@@ -1,13 +1,8 @@
 #ifndef TIMER_H
 #define TIMER_H
 
-#include <stdlib.h>
-#include <unistd.h>
-#include <time.h>
-#include <thread>
-#include <mutex>
-#include <functional>
-#include <algorithm>
+#include <device.h>
+#include <pthread.h>
 
 class timer
 {
@@ -53,6 +48,7 @@ public:
 	
 	bool GetIsStoped() { return this->IsInPause; }
 
+	float ThGetTime(uint8_t& command, float& time, bool& status);
 
 
 private:
