@@ -1,4 +1,6 @@
 #include <timer.h>
+#include <unistd.h>
+#include <Thread.h>
 
 timer::timer(float timeScale)
 {
@@ -13,24 +15,22 @@ timer::~timer()
 void timer::Tick()
 {
 
-	
-	this->ComputeSecondsPerCount();
 	this->ComputeCurrTime();
 
 	/////////////////////////
 	//TotalTime
 	/////////////////////////
-	if (this->IsInPause)
-		this->PauseTime = this->CurrTime - this->StopTime + this->PrevPauseTime;
-	
-	this->TotalTime = ((this->CurrTime - this->BaseTime) - this->PauseTime) * this->SecondsPerCount;
+    if (this->IsInPause)
+        this->PauseTime = this->CurrTime.tv_sec - this->StopTime.tv_sec + this->PrevPauseTime;
+
+    this->TotalTime = ((this->CurrTime.tv_sec - this->BaseTime.tv_sec) - this->PauseTime);
 
 	/////////////////////////
 	//DeltaTime
 	/////////////////////////
-	this->DeltaTime = (this->CurrTime - this->BaseTime) * this->SecondsPerCount;
+    this->DeltaTime = (this->CurrTime.tv_sec - this->PrevTime.tv_sec);
 
-	this->PrevTime = this->CurrTime;
+    this->PrevTime = this->CurrTime;
 
 	/////////////////////////
 	//fps
@@ -48,23 +48,23 @@ void timer::Tick()
 
 void timer::Reset()
 {
-	this->ComputeCurrTime();
-	this->BaseTime = this->CurrTime;
-	this->PrevTime = this->CurrTime;
-	this->StopTime = 0;
-	this->PauseTime = 0;
-	this->PrevPauseTime = 0;
-	this->IsInPause = false;
-	this->TimeElapsed = 0;
-	this->FrameCnt = 0;
+    this->ComputeCurrTime();
+    this->BaseTime = this->CurrTime;
+    this->PrevTime = this->CurrTime;
+    this->StopTime.tv_sec = 0;
+    this->PauseTime = 0;
+    this->PrevPauseTime = 0;
+    this->IsInPause = false;
+    this->TimeElapsed = 0;
+    this->FrameCnt = 0;
 }
 
 void timer::Resume()
 {
-	this->ComputeCurrTime();
-	this->PauseTime = this->CurrTime - this->StopTime + this->PrevPauseTime;
-	this->PrevPauseTime = this->PauseTime;
-	this->IsInPause = false;
+    this->ComputeCurrTime();
+    this->PauseTime = this->CurrTime.tv_sec - this->StopTime.tv_sec + this->PrevPauseTime;
+    this->PrevPauseTime = this->PauseTime;
+    this->IsInPause = false;
 }
 
 void timer::Stop()
@@ -74,20 +74,10 @@ void timer::Stop()
 	this->IsInPause = true;
 }
 
-void timer::ComputeSecondsPerCount()
+int32_t timer::GetPauseTime()
 {
 
-	//QueryPerformanceFrequency((LARGE_INTEGER*)&this->CountsPerSecond);
-	clock(); 
-	this->SecondsPerCount = 1.f/ CLOCKS_PER_SEC * Scale;
-
-}
-
-float timer::GetPauseTime()
-{
-
-	this->ComputeSecondsPerCount();
-	return this->PauseTime * this->SecondsPerCount;
+	return this->PauseTime;
 
 }
 
@@ -95,37 +85,32 @@ float timer::GetPauseTime()
 #include <functional>
 #include <iostream>
 
-
-
 timer* Timer;
+timer* TempTimer;
 
-uint8_t Command = 0;
-
-struct StrArgs
-{
-	uint8_t Command; 
-	float Time;
-};
-
-void ThreadTimerGetTime(uint8_t& command, float& time)
+//uint8_t& command, float& time
+void *ThreadTimerGetTime(void* args)
 {
 	//StrArgs* Args = (StrArgs*)args; 
 	printf("Hello, before new Timer\n");
     timer* CTimer = new timer(0.5f);
 
+    uint8_t* Cmd = (uint8_t*)args;
+    int32_t* Time = (int32_t*)((uint8_t*)args + 1);
+
     CTimer->Reset();
     do
     {
-    	printf("Hello, before Timer Update\n");
-        if(command == 1)
+        if(*Cmd == 1)
             break;
         CTimer->Tick();
-        time = CTimer->GetTotalTime();
+        *Time = CTimer->GetTotalTime();
+        printf("In Thread time = %d \n", *Time);
 
     }while(true);
 
-	printf("Hello, afte Timer Exe\n");
-    command = 0;
+	printf("Hello, after Timer Exe\n");
+    *Cmd = 0;
     delete CTimer;
 }
 
@@ -187,6 +172,40 @@ extern "C"
 
 	}
 
+	void Timer_sleep_until(int sec)
+	{
+
+		sleep(sec);
+
+	}
+
+	short Timer_count_from(int sec, int* currSec)
+	{
+
+		if(!TempTimer)
+		{
+
+			TempTimer = new timer(1.f);
+			TempTimer->Reset();
+
+		}
+		
+		TempTimer->Tick();
+
+		if(currSec)
+			*currSec = sec - TempTimer->GetTotalTime();
+
+		if(TempTimer->GetTotalTime() >= sec)
+		{
+			delete TempTimer;
+			TempTimer = 0;
+			return 1;
+		}
+		else 
+			return 0;
+
+	}
+
 	///////////////////////////////////////
 	//**Timer funcs for parallel execution
 	//**This functions just for tests
@@ -209,6 +228,8 @@ extern "C"
 
 	}*/
 
+	uint8_t Command = 0;
+
 	void TimerStop()
 	{
 
@@ -219,24 +240,18 @@ extern "C"
 	float TimerGetTime()
 	{
 
-	    static bool Status;
-	    static float Time;
+		static bool Status;
+		static int32_t Time;
+		static Thread Thr;
 
-	    //StrArgs Args;
-
-	    printf("Hello, before !Status\n");
 	    if(!Status)
 	    {
-	    	printf("Hello, before threeead\n");
-	    	//pthread_t Thread;
-	    	//pthread_create(&Thread, NULL, ThreadTimerGetTime, (void*)&(Args));
-	        std::thread Thread(ThreadTimerGetTime, std::ref(Command), std::ref(Time));
-	        printf("Hello, before detach\n");
-	        //Thread.detach();
-	        printf("Hello, after detach\n");
+	    	Thr.SetArg(&Command);
+	    	Thr.SetArg(&Time);
+	    	InitThread(&Thr, ThreadTimerGetTime);
+	        Thr.Detach();
 	        Status = true;
 	    }
-	    printf("Hello, before Return time\n");	
 	    return Time;
 
 	    /*static bool Status = 0;

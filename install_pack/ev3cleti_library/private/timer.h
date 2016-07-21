@@ -2,6 +2,7 @@
 #define TIMER_H
 
 #include <device.h>
+#include <sys/time.h>
 #include <pthread.h>
 
 class timer
@@ -28,23 +29,21 @@ public:
 	// Return Fraps(cycles) per second
 	int GetFPS(){ return FPS; }
 	// Return Pause Time
-	float GetPauseTime();
+	int32_t GetPauseTime();
 	// Return non-Pause Time
-	float GetTotalTime() { return this->TotalTime; }
+	int32_t GetTotalTime() { return this->TotalTime; }
 	
-	int64_t GetSecondsPerCount() { return this->SecondsPerCount; }
 	void ComputeSecondsPerCount();
 	
 	float GetTimeScale() { return this->Scale; }
 	
 	//Return seconds in one cycle
-	int64_t GetDeltaTime() { return this->DeltaTime; }
+	int32_t GetDeltaTime() { return this->DeltaTime; }
 	
-	void ComputeCurrTime() { this->CurrTime = clock(); }
+	void ComputeCurrTime() { gettimeofday(&this->CurrTime,NULL); }
 	
 	//Return Time (Processor cycles) 
-	int64_t& GetCurrTime() { return this->CurrTime; }
-
+	int32_t GetCurrTime() { return this->CurrTime.tv_sec; }
 	
 	bool GetIsStoped() { return this->IsInPause; }
 
@@ -56,20 +55,18 @@ private:
 	///////////////////////////////////
 	//**Processor Counts
 	///////////////////////////////////
-	// Current Time
-	int64_t CurrTime;
-	// Previous Time
-	int64_t PrevTime;
-	// Start Time
-	int64_t BaseTime;
-	// Stop Time
-	int64_t StopTime;
-	// In Pause Time
-	int64_t PauseTime;
-	// In Previuos Pause Time
-	int64_t PrevPauseTime;
-
-	double SecondsPerCount;
+    // Current Time
+    timeval CurrTime;
+    // Previous Time
+    timeval PrevTime;
+    // Start Time
+    timeval BaseTime;
+    // Stop Time
+    timeval StopTime;
+    // In Pause Time
+    int32_t PauseTime;
+    // In Previuos Pause Time
+    int32_t PrevPauseTime;
 
 	///////////////////////////////////
 	//**Non-Processor Counts
@@ -78,14 +75,14 @@ private:
 	
 	float Scale;
 	// non-Pause Time
-	float TotalTime;
+	int32_t TotalTime;
 	
-	float DeltaTime;
+	int32_t DeltaTime;
 
 private:
 
 	int FrameCnt;
-	float TimeElapsed;
+	int32_t TimeElapsed;
 
 	bool IsInPause;
 };
