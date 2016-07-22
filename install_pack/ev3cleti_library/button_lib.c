@@ -9,7 +9,9 @@
 
 int __ev3_button_fd = -1;
 
-bool Button_pressed ( ev3_button_id_t button )
+short Status[6];
+
+bool Button_pressed ( short button )
 {
 	char keys[96];
 	
@@ -42,6 +44,27 @@ bool Button_pressed ( ev3_button_id_t button )
 	return( false );
 }
 
+#define TS_DEFAULT 0
+#define TS_PRESSED 1
+
+bool Button_click( short button )
+{
+
+	if(Status[button] == TS_DEFAULT && Button_pressed(button))
+    {
+      Status[button]= TS_PRESSED;
+      return (false);
+    }
+    if(Status[button] == TS_PRESSED && !Button_pressed(button))
+    {
+      Status[button] = TS_DEFAULT;
+      return (true);
+    }
+
+    return (false);
+
+}
+
 int Button_free_resources ( void )
 {
 	if ( __ev3_button_fd != -1 ) {
@@ -49,3 +72,4 @@ int Button_free_resources ( void )
 	}
 	return( 0 );
 }
+

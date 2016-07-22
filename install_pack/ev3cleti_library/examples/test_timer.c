@@ -7,7 +7,7 @@
 int main ( void )
 {
  
-    Lcd_clear();
+Lcd_clear();
 
     int Time = 0;
     uint8_t Flag = 0;
@@ -25,9 +25,25 @@ int main ( void )
 
     Lcd_text(10,10, NORMAL, "Sleep 1 second...");
     Timer_sleep_until(1);
+    Lcd_clear();
+
+    do
+    {
+
+        Lcd_text(10,10,NORMAL, "%d", Timer_get_time());
+        Lcd_text(10,20,NORMAL, "HOLD Left Button");
+        Lcd_text(10,30,NORMAL, "to EXIT");
+        Timer_sleep_until(1);
+        Lcd_clear();
+
+        if(Button_pressed(BUTTON_LEFT))
+            break;
+
+    }while(1);
 
     Lcd_clear();
     Lcd_release();
+    Button_free_resources();
     return( 0 );
 }
 

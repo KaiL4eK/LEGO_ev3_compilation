@@ -1,6 +1,6 @@
 #include <timer.h>
 #include <unistd.h>
-#include <Thread.h>
+//#include <Thread.h>
 
 timer::timer(float timeScale)
 {
@@ -81,7 +81,7 @@ int32_t timer::GetPauseTime()
 
 }
 
-#include <thread>
+//#include <thread>
 #include <functional>
 #include <iostream>
 
@@ -144,7 +144,7 @@ extern "C"
 
 	}
 
-	float Timer_get_time()
+	int32_t Timer_get_time()
 	{
 
 		if(!Timer)
@@ -237,7 +237,7 @@ extern "C"
 
 	}
 
-	float TimerGetTime()
+	/*float TimerGetTime()
 	{
 
 		static bool Status;
@@ -263,8 +263,8 @@ extern "C"
 			Timer->Reset();
 		}
 
-		return Timer->ThGetTime(Command, Time, Status);*/
+		return Timer->ThGetTime(Command, Time, Status);
 
-	}
+	}*/
 
 }

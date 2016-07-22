@@ -1,4 +1,4 @@
-#ifndef THREAD_H
+/*#ifndef THREAD_H
 #define THREAD_H
 
 #include <stdlib.h>
@@ -31,4 +31,4 @@ private:
 
 void InitThread(Thread* thr, void*(*func)(void*));
 
-#endif //!THREAD_H
+#endif //!THREAD_H*/
