@@ -180,48 +180,15 @@ __CHECK_INIT
 
 void Lcd_text(int16_t x, int16_t y, Font_size_t size,const char *text, ...)
 {
-
+	static char Buffer[512];
     va_list Args;
-    va_start(Args, text);
+	va_start(Args, text);
 
-    std::string Buffer;
+	vsprintf(Buffer, text, Args);
+	
+	va_end(Args);
 
-    char Buf[8];
-
-    for (const char* ptr = text; *ptr != '\0'; ptr++)
-    {
-
-        if (*ptr == '%')
-        {
-            ptr++;
-
-            if (*ptr == 'd')
-            {
-
-                int Var = va_arg(Args, int);
-                sprintf(Buf, "%d", Var);
-                Buffer += Buf;
-
-            }
-            else if (*ptr == 'f')
-            {
-
-                float Var = va_arg(Args, double);
-                sprintf(Buf, "%4.2f", Var);
-                Buffer += Buf;
-
-            }
-
-        }
-        else
-        {
-            Buffer += *ptr;
-        }
-
-    }
-
-    Lcd_render_text(x,y,Buffer.c_str(),size);
-
+    Lcd_render_text(x,y,&Buffer,size);
 }
 
 typedef enum figure_fill_type_ {
