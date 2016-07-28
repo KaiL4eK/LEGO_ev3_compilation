@@ -188,7 +188,7 @@ void Lcd_text(int16_t x, int16_t y, Font_size_t size,const char *text, ...)
 	
 	va_end(Args);
 
-    Lcd_render_text(x,y,&Buffer,size);
+    Lcd_render_text(x,y,Buffer,size);
 }
 
 typedef enum figure_fill_type_ {

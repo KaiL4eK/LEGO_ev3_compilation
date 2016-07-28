@@ -34,16 +34,14 @@ extern "C"
   ////////////////////////////////
   float UltraSonicSensor_read_cm ( const char *sensor_port )
   {
-      ultrasonic_sensor *us_ptr = get_sensor_ptr<ultrasonic_sensor>( std::string( sensor_port ) );
-
-      return( us_ptr->distance_centimeters() );
+      ultrasonic_sensor *USSensor = get_sensor_ptr<ultrasonic_sensor>( std::string( sensor_port ) );
+      return( USSensor->distance_centimeters() );
   }
 
   float UltraSonicSensor_read_in (const char* sensor_port)
   {
 
     ultrasonic_sensor *USSensor = get_sensor_ptr<ultrasonic_sensor>(std::string(sensor_port));
-
     return (USSensor->distance_inches());
 
   } 
@@ -92,10 +90,6 @@ extern "C"
   bool TouchSensor_isPressed ( const char *sensor_port )
   {
       touch_sensor *touch_ptr = get_sensor_ptr<touch_sensor>( std::string( sensor_port ) );
-
-      if(!touch_ptr)
-        return 0;
-
       return( touch_ptr->is_pressed() );
   }
 
@@ -103,10 +97,6 @@ extern "C"
   {
 
       touch_sensor *touch_ptr = get_sensor_ptr<touch_sensor>(std::string(sensor_port ) );
-
-      if(!touch_ptr)
-        return 0;
-
       return (touch_ptr->Clicked());
 
   }
@@ -127,14 +117,7 @@ extern "C"
 
     color_sensor *CSensorPtr = get_sensor_ptr<color_sensor>(std::string(sensor_port));
 
-    if(CSensorPtr)
-    {
-
-      return CSensorPtr->reflect();
-      
-    }
-
-    return 0;
+    return CSensorPtr->reflect();
 
   }
 
@@ -143,27 +126,57 @@ extern "C"
 
     color_sensor *CSensorPtr = get_sensor_ptr<color_sensor>(std::string(sensor_port));
 
-    if(CSensorPtr)
-      return CSensorPtr->ambient();
-
-    return 0;
+    return CSensorPtr->ambient();
 
   }
 
-  void ColorSensor_calibrate(const char* sensor_port)
+  uint16_t ColorSensor_get_color_component(const char* sensor_port, uint8_t COLOR_COMPONENT_ )
   {
 
-   /* color_sensor *CSensorPtr = get_sensor_ptr<color_sensor>(std::string(sensor_port));
+    color_sensor *CSensorPtr = get_sensor_ptr<color_sensor>(std::string(sensor_port));
 
-    if(CSensorPtr)
-      CSensorPtr->reset();*/
+    //switch(COLOR_COMPONENT_)
+    //{
+
+      //case COLOR_COMPONENT_RED:
+        return CSensorPtr->red();
+      //case COLOR_COMPONENT_GREEN:
+      //  return CSensorPtr->green();
+      //case COLOR_COMPONENT_BLUE:
+      //  return CSensorPtr->blue();
+
+    //}
+
+    //return 0;
+
+  }
+
+  uint8_t ColorSensor_detect_color(const char* sensor_port, Color_s_color_t color)
+  {
+
+    if(color == ColorSensor_get_color(sensor_port))
+      return 1;
+    else 
+      return 0;
+
+  }
+
+  uint8_t ColorSensor_detect_color_RGB(const char* sensor_port, uint16_t red, uint16_t green, uint16_t blue, uint16_t error)
+  {
+
+    if(abs(red - ColorSensor_get_color_component(sensor_port, COLOR_COMPONENT_RED)) <= error)
+      if(abs(green - ColorSensor_get_color_component(sensor_port, COLOR_COMPONENT_GREEN)) <= error)
+        if(abs(blue - ColorSensor_get_color_component(sensor_port, COLOR_COMPONENT_BLUE)) <= error)
+          return 1;
+
+    return 0;
 
   }
 
   ////////////////////////////////
   //**GyroSensor
   ////////////////////////////////
-  int16_t gyro_sensor_angle(const char* sensor_port)
+  int16_t GyroSensor_angle(const char* sensor_port)
   {
 
     gyro_sensor* GSensor = get_sensor_ptr<gyro_sensor>(std::string(sensor_port));
@@ -172,7 +185,7 @@ extern "C"
 
   }
 
-  int16_t gyro_sensor_rate(const char* sensor_port)
+  int16_t GyroSensor_rate(const char* sensor_port)
   {
 
     gyro_sensor* GSensor = get_sensor_ptr<gyro_sensor>(std::string(sensor_port));
@@ -181,7 +194,7 @@ extern "C"
 
   }
 
-  void gyro_sensor_calibrate(const char* sensor_port)
+  void GyroSensor_calibrate(const char* sensor_port)
   {
 
     gyro_sensor* GSensor = get_sensor_ptr<gyro_sensor>(std::string(sensor_port));
@@ -189,10 +202,19 @@ extern "C"
     return GSensor->calibrate();
   }
 
-  uint16_t gyro_sensor_angle_bearing(const char* sensor_port)
+  uint16_t GyroSensor_angle_bearing(const char* sensor_port)
   {
 
-    return gyro_sensor_angle(sensor_port) % 360;
+    return 0;// gyro_sensor_angle(sensor_port) % 360;
+
+  }
+
+  int16_t GyroSensor_acceleration(const char* sensor_port)
+  {
+
+    gyro_sensor* GSensor = get_sensor_ptr<gyro_sensor>(std::string(sensor_port));
+
+    return GSensor->acceliration();
 
   }
 

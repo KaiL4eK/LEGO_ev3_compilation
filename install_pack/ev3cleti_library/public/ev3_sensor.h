@@ -17,8 +17,12 @@ typedef enum color_s_color_ {
    COLOR_BROWN = 7
 }Color_s_color_t;
 
+#define COLOR_COMPONENT_RED 0
+#define COLOR_COMPONENT_GREEN 1
+#define COLOR_COMPONENT_BLUE 2
+
 ////////////////////////////////
-//**UltraSensor
+//**UltraSonicSensor
 ////////////////////////////////
 float UltraSonicSensor_read_cm ( const char *sensor_port );
 float UltraSonicSensor_read_in (const char* sensor_port);
@@ -40,14 +44,16 @@ bool TouchSensor_Clicked ( const char *sensor_port);
 Color_s_color_t ColorSensor_get_color ( const char *sensor_port );
 uint8_t ColorSensor_get_reflected_light(const char *sensor_port);
 uint8_t ColorSensor_get_ambient_light(const char* sensor_port);
-//void ColorSensor_calibrate(const char* sensor_port);
-
+//uint16_t ColorSensor_get_color_component(const char* sensor_port, uint8_t COLOR_COMPONENT_ );
+uint8_t ColorSensor_detect_color(const char* sensor_port, Color_s_color_t color);
+//uint8_t ColorSensor_detect_color_RGB(const char* sensor_port, uint16_t red, uint16_t green, uint16_t blue, uint16_t error);
 ////////////////////////////////
 //**GyroSensor
 ////////////////////////////////
-int16_t gyro_sensor_angle(const char* sensor_port);
-int16_t gyro_sensor_rate(const char* sensor_port);
+int16_t GyroSensor_angle(const char* sensor_port);
+int16_t GyroSensor_rate(const char* sensor_port);
+int16_t GyroSensor_acceleration(const char* sensor_port);
 //uint16_t gyro_sensor_angle_bearing(const char* sensor_port);
-void gyro_sensor_calibrate(const char* sensor_port);
+void GyroSensor_calibrate(const char* sensor_port);
 
 #endif //EV3_SENSOR_H_

@@ -235,10 +235,6 @@ public:
   // Raw Color Components. All LEDs rapidly cycling, appears white.
   static constexpr char mode_rgb_raw[] = "RGB-RAW";
 
-  // Calibration
-  //static constexpr char mode_col_cal[] = "COL-CAL";
-
-
   // Reflected light intensity as a percentage. Light on sensor is red.
   int reflected_light_intensity() {
     set_mode(mode_col_reflect);
@@ -415,27 +411,18 @@ public:
     return value(0);
   }
 
-  struct INT162d
-  {
-    int16_t angle;
-    int16_t rate;
-  };
-
-  INT162d ange_rate()
-  {
-    if(!check_mode(mode_gyro_g_a))
-      set_mode(mode_gyro_g_a);
-
-    INT162d Out;
-    Out.angle = value(0);
-    Out.rate = value(1);
-
-    return Out;
-  }
-
   void calibrate()
   {
     set_mode(mode_gyro_cal);
+  }
+
+  int16_t acceliration()
+  {
+    if(!check_mode(mode_gyro_fas))
+      set_mode(mode_gyro_fas);
+
+    return value(0);
+
   }
 
 };
