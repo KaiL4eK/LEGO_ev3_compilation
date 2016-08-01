@@ -14,4 +14,4 @@ void Motor_reverse(const char* motor_port);
 float Motor_get_speed(const char* motor_port);
 //void Motor_ramp(const char *motor_port, int up, int down);
 //void SetPID(const char *motor_port, float p, float i, float d);
-#endif //EV3_MOTOR_H_
+#endif //EV3_MOTOR_H_ 

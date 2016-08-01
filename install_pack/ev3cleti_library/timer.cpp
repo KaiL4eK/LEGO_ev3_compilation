@@ -89,7 +89,7 @@ timer* Timer;
 timer* TempTimer;
 
 //uint8_t& command, float& time
-void *ThreadTimerGetTime(void* args)
+/*void *ThreadTimerGetTime(void* args)
 {
 	//StrArgs* Args = (StrArgs*)args; 
 	printf("Hello, before new Timer\n");
@@ -112,7 +112,7 @@ void *ThreadTimerGetTime(void* args)
 	printf("Hello, after Timer Exe\n");
     *Cmd = 0;
     delete CTimer;
-}
+}*/
 
 extern "C"
 {
@@ -254,7 +254,7 @@ extern "C"
 	    }
 	    return Time;
 
-	    /*static bool Status = 0;
+	    static bool Status = 0;
 	    static float Time;
 
 	    if(!Timer)
