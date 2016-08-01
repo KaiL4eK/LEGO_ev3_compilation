@@ -360,22 +360,4 @@ __CHECK_INIT
     }
 }
 
-
-void Lcd_WR_file()
-{
-
-   std::ofstream OFILE("TFile.txt");
-   OFILE << "Hello" << std::endl;
-   OFILE.close();
-
-   std::string Buffer;
-
-   std::ifstream IFILE("TFile.txt");
-   std::getline(IFILE, Buffer);
-   IFILE.close();
-   std::cout << Buffer << std::endl;
-   Lcd_text(10,10,NORMAL, Buffer.c_str());
-
-}
-
 }

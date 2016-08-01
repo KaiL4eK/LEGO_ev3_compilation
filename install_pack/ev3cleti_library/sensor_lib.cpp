@@ -214,7 +214,7 @@ extern "C"
 
     gyro_sensor* GSensor = get_sensor_ptr<gyro_sensor>(std::string(sensor_port));
 
-    return GSensor->acceliration();
+    return GSensor->acceleration();
 
   }
 

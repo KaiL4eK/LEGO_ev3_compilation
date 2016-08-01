@@ -90,7 +90,7 @@ extern "C"
         motor_ptr->stop();
     }
 
-    void Motor_stor_all ( void )
+    void Motor_stop_all ( void )
     {
         for (auto m_ptr : motors_list) {
             m_ptr.second->reset();

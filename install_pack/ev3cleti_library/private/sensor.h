@@ -416,7 +416,7 @@ public:
     set_mode(mode_gyro_cal);
   }
 
-  int16_t acceliration()
+  int16_t acceleration()
   {
     if(!check_mode(mode_gyro_fas))
       set_mode(mode_gyro_fas);

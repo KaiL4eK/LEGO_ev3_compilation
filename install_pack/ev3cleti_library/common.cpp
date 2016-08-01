@@ -25,7 +25,7 @@ void error_process ( std::string function, std::string msg )
     getchar();
 
     Lcd_release();
-    Motor_stor_all();
+    Motor_stop_all();
 
     exit( 1 );
 }
