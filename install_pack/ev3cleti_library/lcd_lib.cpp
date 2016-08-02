@@ -1,6 +1,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <file.h>
 extern "C" {
 
 #include <stdint.h>
@@ -358,6 +359,15 @@ __CHECK_INIT
             y0 += sy;
         }
     }
+}
+
+void Lcd_draw_pixel(int x, int y, Pixel_color_t color )
+{
+
+    __CHECK_INIT
+
+    EV3_PIXEL(x,y,color);
+
 }
 
 }
