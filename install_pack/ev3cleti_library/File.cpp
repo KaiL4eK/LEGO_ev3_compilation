@@ -5,22 +5,26 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 bool SaveFile(char* fileName, char* buffer, short append)
 {
 
-	std::ofstream OFILE;
+    static std::ofstream OFILE;
+    static char* FName = NULL;
 
-	if(append)
-		OFILE.open(fileName, std::ofstream::app);
-	else 
-		OFILE.open(fileName);
-
-	if(OFILE.fail())
-		return false;
-	OFILE << buffer <<std::endl;
-	OFILE.close();
-	return true;
+    if(!OFILE.is_open() || strcasecmp(FName, fileName))
+    {
+        if(append)
+            OFILE.open(fileName, std::ofstream::app);
+        else
+            OFILE.open(fileName);
+    }
+    if(OFILE.fail())
+        return false;
+    OFILE << buffer << std::endl;
+    OFILE.close();
+    return true;
 
 }
 
@@ -51,6 +55,27 @@ char* LoadFile(char* fileName)
 
 }
 
+char* LoadStirngFromFile(char* fileName)
+{
+
+    static std::ifstream FILE;
+    static std::string OBuffer;
+    static char* FName = NULL;
+
+    if(!FILE.is_open() || strcasecmp(FName, fileName))
+    {
+        FILE.open(fileName);
+        FName = fileName;
+    }
+
+    std::getline(FILE, OBuffer);
+
+    if(OBuffer.size())
+        return &OBuffer.at(0);
+
+    return 0;
+}
+
 extern "C"
 {
 
@@ -65,6 +90,13 @@ extern "C"
 	{
 
 		return LoadFile(fileName);
+
+	}
+
+	char* File_load_string(char* fileName)
+	{
+
+		return LoadStirngFromFile(fileName);
 
 	}
 
