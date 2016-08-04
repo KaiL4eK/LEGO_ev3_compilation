@@ -1,6 +1,25 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <Thread.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+//Test MThr func
+void* FThr(void* arg)
+{
+
+    sleep(5);
+
+    printf("MultiPause\n");
+
+    sleep(5);
+
+    printf("MultiPauseEnd\n");
+
+} 
+
 extern "C" {
 
 #include <stdint.h>
@@ -377,5 +396,18 @@ void Lcd_WR_file()
    Lcd_text(10,10,NORMAL, Buffer.c_str());
 
 }
+
+//Test func for MThr exe
+void Lcd_MT()
+{
+
+    Thread Thr;
+    int Wat = 0;
+    Thr.SetArg(&Wat);
+    InitThread(&Thr, FThr);
+    Thr.Detach();
+
+}
+
 
 }

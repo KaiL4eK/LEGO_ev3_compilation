@@ -1,4 +1,4 @@
-/*#include <Thread.h>
+#include <Thread.h>
 
 void Thread::Detach()
 {
@@ -22,4 +22,4 @@ void InitThread(Thread* thr, void*(*func)(void*))
     pthread_create(&PThread,NULL, func, thr->GetArg().front());
     thr->SetThread(&PThread);
 
-}*/
+}
