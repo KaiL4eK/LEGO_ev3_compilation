@@ -179,7 +179,7 @@ int device::device_index() const
   using namespace std;
 
   if (_path.empty())
-    throw system_error(make_error_code(errc::function_not_supported), "no device connected");
+    error_process ( "device_index", "no device connected" );
 
   if (_device_index < 0)
   {
@@ -204,8 +204,7 @@ int device::get_attr_int(const std::string &name) const {
   using namespace std;
 
   if (_path.empty())
-    throw system_error(make_error_code(errc::function_not_supported), "no device connected");
-
+    error_process ( "get_attr_int", "no device connected" );
   for(int attempt = 0; attempt < 2; ++attempt) {
     ifstream &is = ifstream_open(_path + name);
     if (is.is_open())
@@ -213,6 +212,7 @@ int device::get_attr_int(const std::string &name) const {
       int result = 0;
       try {
         is >> result;
+        printf("%d\n", result);
         return result;
       } catch(...) {
         // This could mean the sysfs attribute was recreated and the
@@ -225,7 +225,8 @@ int device::get_attr_int(const std::string &name) const {
       }
     } else break;
   }
-  throw system_error(make_error_code(errc::no_such_device), _path+name);
+  error_process ( "get_attr_int", _path+name );
+  return 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -234,8 +235,7 @@ void device::set_attr_int(const std::string &name, int value) {
   using namespace std;
 
   if (_path.empty())
-    throw system_error(make_error_code(errc::function_not_supported), "no device connected");
-
+    error_process ( "set_attr_int", "no device connected" );
   for(int attempt = 0; attempt < 2; ++attempt) {
     ofstream &os = ofstream_open(_path + name);
     if (os.is_open())
@@ -251,7 +251,7 @@ void device::set_attr_int(const std::string &name, int value) {
         throw system_error(std::error_code(errno, std::system_category()));
       }
     } else {
-      throw system_error(make_error_code(errc::no_such_device), _path + name);
+      error_process ( "set_attr_int", _path+name );
     }
   }
 }
@@ -263,7 +263,7 @@ std::string device::get_attr_string(const std::string &name) const
   using namespace std;
 
   if (_path.empty())
-    throw system_error(make_error_code(errc::function_not_supported), "no device connected");
+    error_process ( "get_attr_string", "no device connected" );
 
   ifstream &is = ifstream_open(_path + name);
   if (is.is_open())
@@ -272,8 +272,7 @@ std::string device::get_attr_string(const std::string &name) const
     is >> result;
     return result;
   }
-
-  throw system_error(make_error_code(errc::no_such_device), _path+name);
+  error_process ( "get_attr_string", _path+name );
 }
 
 //-----------------------------------------------------------------------------
@@ -283,7 +282,7 @@ void device::set_attr_string(const std::string &name, const std::string &value)
   using namespace std;
 
   if (_path.empty())
-    throw system_error(make_error_code(errc::function_not_supported), "no device connected");
+    error_process ( "set_attr_string", "no device connected" );
 
   ofstream &os = ofstream_open(_path + name);
   if (os.is_open())
@@ -291,8 +290,7 @@ void device::set_attr_string(const std::string &name, const std::string &value)
     if (!(os << value)) throw system_error(std::error_code(errno, std::system_category()));
     return;
   }
-
-  throw system_error(make_error_code(errc::no_such_device), _path+name);
+  error_process ( "set_attr_string", _path+name );
 }
 
 //-----------------------------------------------------------------------------
@@ -302,7 +300,7 @@ std::string device::get_attr_line(const std::string &name) const
   using namespace std;
 
   if (_path.empty())
-    throw system_error(make_error_code(errc::function_not_supported), "no device connected");
+    error_process ( "get_attr_line", "no device connected" );
 
   ifstream &is = ifstream_open(_path + name);
   if (is.is_open())
@@ -311,14 +309,12 @@ std::string device::get_attr_line(const std::string &name) const
     getline(is, result);
     return result;
   }
-
-  throw system_error(make_error_code(errc::no_such_device), _path+name);
+  error_process ( "get_attr_line", _path+name );
 }
 
 //-----------------------------------------------------------------------------
 
-mode_set device::get_attr_set(const std::string &name,
-                              std::string *pCur) const
+mode_set device::get_attr_set(const std::string &name, std::string *pCur) const
 {
   using namespace std;
 

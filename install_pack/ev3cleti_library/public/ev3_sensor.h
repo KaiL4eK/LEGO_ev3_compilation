@@ -44,9 +44,9 @@ bool TouchSensor_Clicked ( const char *sensor_port);
 Color_s_color_t ColorSensor_get_color ( const char *sensor_port );
 uint8_t ColorSensor_get_reflected_light(const char *sensor_port);
 uint8_t ColorSensor_get_ambient_light(const char* sensor_port);
-//uint16_t ColorSensor_get_color_component(const char* sensor_port, uint8_t COLOR_COMPONENT_ );
+uint16_t ColorSensor_get_color_component(const char* sensor_port, uint8_t COLOR_COMPONENT_ );
 uint8_t ColorSensor_detect_color(const char* sensor_port, Color_s_color_t color);
-//uint8_t ColorSensor_detect_color_RGB(const char* sensor_port, uint16_t red, uint16_t green, uint16_t blue, uint16_t error);
+uint8_t ColorSensor_detect_color_RGB(const char* sensor_port, uint16_t red, uint16_t green, uint16_t blue, uint16_t error);
 ////////////////////////////////
 //**GyroSensor
 ////////////////////////////////
