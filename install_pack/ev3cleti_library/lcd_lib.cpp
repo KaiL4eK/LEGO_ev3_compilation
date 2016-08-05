@@ -1,13 +1,14 @@
 #include <string>
 #include <fstream>
 #include <iostream>
-#include <Thread.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
+#include <thread>
+
 //Test MThr func
-void* FThr(void* arg)
+void F2Thr()
 {
 
     sleep(5);
@@ -18,7 +19,20 @@ void* FThr(void* arg)
 
     printf("MultiPauseEnd\n");
 
-} 
+}
+
+char Gl_Command = 0;
+
+void ExeLCD()
+{
+
+    do
+    {
+
+        
+    }while(1);
+
+}
 
 extern "C" {
 
@@ -379,33 +393,12 @@ __CHECK_INIT
     }
 }
 
-
-void Lcd_WR_file()
-{
-
-   std::ofstream OFILE("TFile.txt");
-   OFILE << "Hello" << std::endl;
-   OFILE.close();
-
-   std::string Buffer;
-
-   std::ifstream IFILE("TFile.txt");
-   std::getline(IFILE, Buffer);
-   IFILE.close();
-   std::cout << Buffer << std::endl;
-   Lcd_text(10,10,NORMAL, Buffer.c_str());
-
-}
-
 //Test func for MThr exe
 void Lcd_MT()
 {
 
-    Thread Thr;
-    int Wat = 0;
-    Thr.SetArg(&Wat);
-    InitThread(&Thr, FThr);
-    Thr.Detach();
+    std::thread Thr(F2Thr);
+    Thr.detach();
 
 }
 
