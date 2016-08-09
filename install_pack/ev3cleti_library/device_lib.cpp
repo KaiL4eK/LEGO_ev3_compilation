@@ -218,7 +218,7 @@ int device::get_attr_int(const std::string &name) const {
         // This could mean the sysfs attribute was recreated and the
         // corresponding file handle got stale. Lets close the file and try
         // again (once):
-        if (attempt != 0) throw;
+        if (attempt != 0) error_process ( "get_attr_int", "bad value" );
 
         is.close();
         is.clear();

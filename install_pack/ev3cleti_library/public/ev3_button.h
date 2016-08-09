@@ -22,6 +22,5 @@
 
 bool Button_pressed ( short button );
 bool Button_click( short button );
-int Button_free_resources ( void );
 
 #endif // EV3_BUTTON_H_
