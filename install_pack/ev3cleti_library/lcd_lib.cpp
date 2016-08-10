@@ -5,35 +5,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#include <thread>
-
-//Test MThr func
-void F2Thr()
-{
-
-    sleep(5);
-
-    printf("MultiPause\n");
-
-    sleep(5);
-
-    printf("MultiPauseEnd\n");
-
-}
-
-char Gl_Command = 0;
-
-void ExeLCD()
-{
-
-    do
-    {
-
-        
-    }while(1);
-
-}
-
 extern "C" {
 
 #include <stdint.h>
@@ -392,15 +363,5 @@ __CHECK_INIT
         }
     }
 }
-
-//Test func for MThr exe
-void Lcd_MT()
-{
-
-    std::thread Thr(F2Thr);
-    Thr.detach();
-
-}
-
 
 }

@@ -26,7 +26,5 @@ void Lcd_draw_ellipse_edged ( int16_t x, int16_t y, int16_t rx, int16_t ry, Pixe
 void Lcd_draw_circle_filled ( int16_t x, int16_t y, int16_t r, Pixel_color_t color );
 void Lcd_draw_circle_edged ( int16_t x, int16_t y, int16_t r, Pixel_color_t color );
 void Lcd_draw_line( int16_t x0, int16_t y0, int16_t x1, int16_t y1, Pixel_color_t color );
-//Test func for MThr exe
-void Lcd_MT();
 
 #endif //EV3_LCD_H_

@@ -3,7 +3,6 @@
 
 #include <device.h>
 #include <sys/time.h>
-#include <pthread.h>
 
 class timer
 {

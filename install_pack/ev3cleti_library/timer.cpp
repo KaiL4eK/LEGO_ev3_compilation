@@ -1,6 +1,5 @@
 #include <timer.h>
 #include <unistd.h>
-//#include <Thread.h>
 
 timer::timer(float timeScale)
 {
@@ -81,59 +80,14 @@ int32_t timer::GetPauseTime()
 
 }
 
-//#include <thread>
 #include <functional>
 #include <iostream>
 
 timer* Timer;
 timer* TempTimer;
 
-//uint8_t& command, float& time
-/*void *ThreadTimerGetTime(void* args)
-{
-	//StrArgs* Args = (StrArgs*)args; 
-	printf("Hello, before new Timer\n");
-    timer* CTimer = new timer(0.5f);
-
-    uint8_t* Cmd = (uint8_t*)args;
-    int32_t* Time = (int32_t*)((uint8_t*)args + 1);
-
-    CTimer->Reset();
-    do
-    {
-        if(*Cmd == 1)
-            break;
-        CTimer->Tick();
-        *Time = CTimer->GetTotalTime();
-        printf("In Thread time = %d \n", *Time);
-
-    }while(true);
-
-	printf("Hello, after Timer Exe\n");
-    *Cmd = 0;
-    delete CTimer;
-}*/
-
 extern "C"
 {
-
-	/*void ThreadTimeDelay(int seconds, short& ready)
-	{
-
-	    timer* CTimer = new timer(0.5f);
-
-	    CTimer->Reset();
-	    do
-	    {
-	        CTimer->Tick();
-
-	    }while(CTimer->GetTotalTime() < seconds);
-
-	    delete CTimer;
-
-	    ready = 1;
-
-	}*/
 
 	void Timer_reset()
 	{
@@ -205,66 +159,5 @@ extern "C"
 			return 0;
 
 	}
-
-	///////////////////////////////////////
-	//**Timer funcs for parallel execution
-	//**This functions just for tests
-	//**I will rename them later
-	///////////////////////////////////////
-	/*short TimeDelay(int seconds)
-	{
-
-	    static short Ready = 0;
-	    static bool Status = 0;
-
-	    if(!Status)
-	    {
-	        std::thread ThTimeDelay(ThreadTimeDelay,seconds, std::ref(Ready));
-	        //ThTimeDelay.detach();
-	        Status = true;
-	    }
-
-	    return Ready;
-
-	}*/
-
-	uint8_t Command = 0;
-
-	void TimerStop()
-	{
-
-		Command = 1;
-
-	}
-
-	/*float TimerGetTime()
-	{
-
-		static bool Status;
-		static int32_t Time;
-		static Thread Thr;
-
-	    if(!Status)
-	    {
-	    	Thr.SetArg(&Command);
-	    	Thr.SetArg(&Time);
-	    	InitThread(&Thr, ThreadTimerGetTime);
-	        Thr.Detach();
-	        Status = true;
-	    }
-	    return Time;
-
-	    static bool Status = 0;
-	    static float Time;
-
-	    if(!Timer)
-		{
-			Timer = new timer(1.f);
-			Timer->Reset();
-		}
-
-		return Timer->ThGetTime(Command, Time, Status);
-
-	}*/
 
 }
