@@ -1,14 +1,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
-<<<<<<< HEAD
 #include <file.h>
-=======
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-
->>>>>>> MultiThread
 extern "C" {
 
 #include <stdint.h>
@@ -51,10 +44,10 @@ extern "C" {
 int initialized = 0;
 #define __CHECK_INIT { if ( initialized == 0 && Lcd_init() < 0 ) { return; } }
 
-int16_t frameBufferLength 	= 0,
-        x_bufferResolution 	= 0,
-        y_bufferResolution 	= 0,
-        bufferLineLength 	= 0;
+int16_t frameBufferLength   = 0,
+        x_bufferResolution  = 0,
+        y_bufferResolution  = 0,
+        bufferLineLength    = 0;
 
 int32_t __fbfd, __vtfd;
 unsigned char *__fbp = NULL;
@@ -83,7 +76,7 @@ int Lcd_init( void )
     y_bufferResolution = v.yres;
 
     __fbp = ( unsigned char * )mmap( 0, frameBufferLength, PROT_READ | PROT_WRITE, 
-    								 MAP_SHARED, __fbfd, 0 );
+                                     MAP_SHARED, __fbfd, 0 );
     __vtfd = open( "/dev/tty", O_RDONLY );
     ioctl( __vtfd, KDSETMODE, KD_GRAPHICS );
     initialized = 1;
@@ -190,13 +183,13 @@ __CHECK_INIT
 
 void Lcd_text(int16_t x, int16_t y, Font_size_t size,const char *text, ...)
 {
-	static char Buffer[512];
+    static char Buffer[512];
     va_list Args;
-	va_start(Args, text);
+    va_start(Args, text);
 
-	vsprintf(Buffer, text, Args);
-	
-	va_end(Args);
+    vsprintf(Buffer, text, Args);
+    
+    va_end(Args);
 
     Lcd_render_text(x,y,Buffer,size);
 }
@@ -257,17 +250,17 @@ void Lcd_draw_rectangle_edged ( int16_t x, int16_t y, int16_t w, int16_t h, Pixe
 { \
 if (y+b >= 0 && y+b < y_bufferResolution) \
 { \
-	if (x+a >= 0 && x+a < x_bufferResolution) \
-		EV3_PIXEL(x+a,y+b,color); \
-	if (x-a >= 0 && x-a < x_bufferResolution) \
-		EV3_PIXEL(x-a,y+b,color); \
+    if (x+a >= 0 && x+a < x_bufferResolution) \
+        EV3_PIXEL(x+a,y+b,color); \
+    if (x-a >= 0 && x-a < x_bufferResolution) \
+        EV3_PIXEL(x-a,y+b,color); \
 } \
 if (y-b >= 0 && y-b < y_bufferResolution) \
 { \
-	if (x+a >= 0 && x+a < x_bufferResolution) \
-		EV3_PIXEL(x+a,y-b,color); \
-	if (x-a >= 0 && x-a < x_bufferResolution) \
-		EV3_PIXEL(x-a,y-b,color); \
+    if (x+a >= 0 && x+a < x_bufferResolution) \
+        EV3_PIXEL(x+a,y-b,color); \
+    if (x-a >= 0 && x-a < x_bufferResolution) \
+        EV3_PIXEL(x-a,y-b,color); \
 } \
 }
 
@@ -368,7 +361,6 @@ __CHECK_INIT
     }
 }
 
-<<<<<<< HEAD
 void Lcd_draw_pixel(int x, int y, Pixel_color_t color )
 {
 
@@ -378,6 +370,4 @@ void Lcd_draw_pixel(int x, int y, Pixel_color_t color )
 
 }
 
-=======
->>>>>>> MultiThread
 }
