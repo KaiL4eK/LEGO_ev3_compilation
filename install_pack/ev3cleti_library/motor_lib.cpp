@@ -90,7 +90,11 @@ extern "C"
         motor_ptr->stop();
     }
 
+<<<<<<< HEAD
     void Motor_stop_all ( void )
+=======
+    void Motor_stop_all (  )
+>>>>>>> MultiThread
     {
         for (auto m_ptr : motors_list) {
             m_ptr.second->reset();

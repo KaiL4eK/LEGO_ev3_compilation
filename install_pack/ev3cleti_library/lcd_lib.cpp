@@ -1,7 +1,14 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+<<<<<<< HEAD
 #include <file.h>
+=======
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+>>>>>>> MultiThread
 extern "C" {
 
 #include <stdint.h>
@@ -361,6 +368,7 @@ __CHECK_INIT
     }
 }
 
+<<<<<<< HEAD
 void Lcd_draw_pixel(int x, int y, Pixel_color_t color )
 {
 
@@ -370,4 +378,6 @@ void Lcd_draw_pixel(int x, int y, Pixel_color_t color )
 
 }
 
+=======
+>>>>>>> MultiThread
 }
