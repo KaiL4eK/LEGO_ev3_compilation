@@ -32,7 +32,7 @@ executes = $(notdir $(basename $(example_sources)))
 execute_files = $(addprefix $(build_directory)/, $(executes))
 
 libraries_examples = ev3cleti stdc++
-ldflags = $(addprefix -L, $(library_directory)) $(addprefix -l, $(libraries_examples)) -static
+ldflags = $(addprefix -L, $(library_directory)) -Wl,-Bstatic $(addprefix -l, $(libraries)) -Wl,-Bdynamic -lpthread
 
 #--------------------------------------------
 
