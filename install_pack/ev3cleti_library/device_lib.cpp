@@ -200,24 +200,6 @@ int device::device_index() const
 
 //-----------------------------------------------------------------------------
 
-int ASCIIToINT(std::string& str)
-  {
-
-    int Number = 0;
-    short sign = 1;
-
-    for (int i = 0; i < str.size(); i++)
-    {
-      if (str.at(i) != '-')
-        Number = Number * 10 + (int)str.at(i) - 48;
-      else
-        sign = -1;
-    }
-
-    return Number * sign;
-
-}
-
 int device::get_attr_int(const std::string &name) const {
   using namespace std;
 
