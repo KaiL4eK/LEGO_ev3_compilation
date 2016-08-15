@@ -218,13 +218,14 @@ int ASCIIToINT(std::string& str)
 
 }
 
-std::string Str;
-
 int device::get_attr_int(const std::string &name) const {
   using namespace std;
 
   if (_path.empty())
     error_process ( "get_attr_int", "no device connected" );
+
+  static std::string Buffer;
+
   for(int attempt = 0; attempt < 2; ++attempt) {
     ifstream &is = ifstream_open(_path + name);
     if (is.is_open())
@@ -232,17 +233,14 @@ int device::get_attr_int(const std::string &name) const {
       int result = 0;
       try {
 
-        std::getline(is, Str);
-        result = ASCIIToINT(Str);
-
-        //is >> result;
-        printf("%d\n", result);
-        return result;
+        std::getline(is, Buffer);
+        return atoi(Buffer.c_str());
+		
       } catch(...) {
         // This could mean the sysfs attribute was recreated and the
         // corresponding file handle got stale. Lets close the file and try
         // again (once):
-        if (attempt != 0) error_process ( "get_attr_int", "bad value" );
+        if (attempt != 0) error_process ( "get_attr_int", "invalid value" );
 
         is.close();
         is.clear();
