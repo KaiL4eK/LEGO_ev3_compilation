@@ -1,5 +1,4 @@
 
-
 #include <thread>
 #include <mutex>
 #include <vector>
@@ -12,7 +11,7 @@ std::mutex Mutex;
 extern "C"
 {
 	#include <ev3_thread.h>
-	uint8_t InitThread()
+	uint8_t thread_Init()
 	{
 
 		std::thread* NewThread = NULL;
@@ -22,7 +21,7 @@ extern "C"
 		return Threads.size();
 
 	}
-	void CreateThread(void (func)(char*),uint8_t indexOfThread,char* cmd)
+	void thread_Create(void (func)(char*),uint8_t indexOfThread,char* cmd)
 	{
 
 		if(indexOfThread < Threads.size())
@@ -36,7 +35,7 @@ extern "C"
 
 	}
 
-	void JoinThread(uint8_t indexOfThread)
+	void thread_Join(uint8_t indexOfThread)
 	{
 
 		if(indexOfThread < Threads.size())
@@ -46,11 +45,19 @@ extern "C"
 
 	}
 
-	void ProtectOn()
+	void thread_Detach(uint8_t indexOfThread)
+	{
+		if(indexOfThread < Threads.size())
+		{
+			Threads.at(indexOfThread)->detach();
+		}
+	}
+	void thread_ProtectOn()
 	{
 		Mutex.lock();
 	}
-	void ProtectOff()
+
+	void thread_ProtectOff()
 	{
 		Mutex.unlock();
 	}

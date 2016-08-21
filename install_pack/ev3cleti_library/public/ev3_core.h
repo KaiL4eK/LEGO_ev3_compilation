@@ -17,7 +17,6 @@ extern "C" {
 	#include <ev3_led.h>
 	#include <ev3_timer.h>
 	#include <ev3_file.h>
-	#include <ev3_thread.h>
 
 #ifdef __cplusplus
 }
