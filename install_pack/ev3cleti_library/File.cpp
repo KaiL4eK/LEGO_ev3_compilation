@@ -151,7 +151,7 @@ extern "C"
 
 	short File_S_Compare(char* fileName0, char* fileName1)
 	{
-		return CompareFiles(fileName0, fileName1)
+		return CompareFiles(fileName0, fileName1);
 	}
 
 }
