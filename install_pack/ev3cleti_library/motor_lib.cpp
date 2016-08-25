@@ -3,7 +3,7 @@
 
 std::map<std::string, motor *> motors_list;
 
-motor *get_motor_ptr( std::string port )
+motor *get_motor_ptr( std::string port, bool useErrorCatcher = true)
 {
     if ( motors_list.count( port ) ) {
         return( (motor *)motors_list[port] );
@@ -15,126 +15,197 @@ motor *get_motor_ptr( std::string port )
             return new_motor;
         } else {
             delete new_motor;
-            error_process( __FUNCTION__, "Incorrect motor port "+port );
+			if(useErrorCatcher)
+				error_process( __FUNCTION__, "Incorrect motor port "+port );
             return( nullptr );
         }
     }
 }
-
+std::string& get_motor_port(const uint8_t port)
+{
+	switch (port)
+	{
+		case 0x1:
+		{
+			return std::string("out1");
+		{
+		case 0x2:
+		{
+			return std::string("out2");
+		{
+		case 0x4:
+		{
+			return std::string("out3");
+		{
+		case 0x8:
+		{
+			return std::string("out4");
+		{
+	}
+	return std::string("");
+}
 extern "C" 
 {
 
-    bool Motor_isConnected ( const char *motor_port )
-    {
-        motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
+#define MOTORS_CHECK_START_NO_PTR() \
+	for(int i = 1; i < 16; i*= 2)	\
+	{								\
+		if(MOTOR_PORTS & i)			\
+		{							\
 
-        if ( motor_ptr ) {
-            return motor_ptr->connected();
-        }
+#define MOTORS_CHECK_START()		\
+	MOTORS_CHECK_START_NO_PTR()		\
+		motor_ptr = get_motor_ptr(get_motor_port(i)); \
+
+#define MOTORS_CHECK_END()			\
+		}							\
+	}								\
+
+
+    bool Motor_isConnected ( const uint8_t MOTOR_PORTS )
+    {
+
+		motor *motor_ptr = NULL;
+		bool IsConnected = true;
+
+		MOTORS_CHECK_START()
+			if(!motor_ptr)
+			{
+				IsConnected = false;
+				break;
+			}
+		MOTORS_CHECK_END()
+
+		if(IsConnected)
+			return (true);
+     
         return( false );
     }
 
-    void Motor_run_timed ( const char *motor_port, long time_ms, int16_t power )
+    void Motor_run_timed ( const uint8_t MOTOR_PORTS, long time_ms, int16_t power )
     {
-        motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
-        if(!motor_ptr)
-            return;
+        motor *motor_ptr = NULL;
 
+		MOTORS_CHECK_START()
         motor_ptr->set_time_sp( time_ms );
         motor_ptr->set_duty_cycle_sp( power );
         motor_ptr->run_timed();
+		MOTORS_CHECK_END()
     }
 
-    void Motor_run_to_rel_pos( const char* motor_port, int32_t pos, int8_t power )
+    void Motor_run_to_rel_pos( const uint8_t MOTOR_PORTS, int32_t pos, int8_t power )
     {
 
-        motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
-        if(!motor_ptr)
-            return;
+        motor *motor_ptr = NULL;
 
+		MOTORS_CHECK_START()
         motor_ptr->set_duty_cycle_sp( power );
         motor_ptr->set_position_sp(pos);
         motor_ptr->run_to_rel_pos();
+		MOTORS_CHECK_END()
 
     }
 
-    void Motor_run_to_abs_pos( const char* motor_port, int32_t pos, int8_t power )
+    void Motor_run_to_abs_pos( const uint8_t MOTOR_PORTS, int32_t pos, int8_t power )
     {
 
-        motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
-        if(!motor_ptr)
-            return;
+        motor *motor_ptr = NULL;
 
+		MOTORS_CHECK_START()
         motor_ptr->set_duty_cycle_sp( power );
         motor_ptr->set_position_sp(pos);
         motor_ptr->run_to_abs_pos();
+		MOTORS_CHECK_END()
 
     }
 
-    void Motor_run_forever ( const char *motor_port, int16_t power )
+    void Motor_run_forever ( const uint8_t MOTOR_PORTS, int16_t power )
     {
-        motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
-        if(!motor_ptr)
-            return;
+        motor *motor_ptr = NULL;
 
+		MOTORS_CHECK_START()
         motor_ptr->set_duty_cycle_sp( power );
         motor_ptr->run_forever();
+		MOTORS_CHECK_END()
+
     }
 
-    void Motor_stop ( const char *motor_port )
-    {
-        motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
-        if(!motor_ptr)
-            return;
-
+	void Stop( const uint8_t MOTOR_PORTS )
+	{
+		
+		motor *motor_ptr = NULL;
+		MOTORS_CHECK_START()
         motor_ptr->stop();
+		MOTORS_CHECK_END()
+	}
+
+    void Motor_stop ( const uint8_t MOTOR_PORTS )
+    {
+        this->set_stop_action(stop_action_coast[]);
+		Stop(MOTOR_PORTS);
     }
+
+	void Motor_stop_break( const uint8_t MOTOR_PORTS )
+	{
+		this->set_stop_action(stop_action_brake[]);
+		Stop(MOTOR_PORTS);
+	}
+
+	void Motor_stop_hold( const uint8_t MOTOR_PORTS )
+	{
+		this->set_stop_action(stop_action_hold[]);
+		Stop(MOTOR_PORTS);
+	}
 
     void Motor_stop_all ( void )
     {
+		this->set_stop_action(stop_action_coast[]);
         for (auto m_ptr : motors_list) {
             m_ptr.second->reset();
         }
     }
 
-    int32_t Motor_get_position ( const char *motor_port)
+    int32_t Motor_get_position ( const uint8_t MOTOR_PORT)
     {
 
-        motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
-        if(!motor_ptr)
-            return 0;
-
+        motor *motor_ptr = get_motor_ptr(MOTOR_PORT);
         return motor_ptr->position();
 
     }
 
-    void Motor_reset_position(const char *motor_port)
+    void Motor_reset_position(const uint8_t MOTOR_PORTS)
     {
-        motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
-        if(!motor_ptr)
-            return;
+        motor *motor_ptr = NULL;
+
+		MOTORS_CHECK_START()
         motor_ptr->set_position(0);
+		MOTORS_CHECK_END()
     }
 
-    void Motor_reverse(const char* motor_port)
+    void Motor_reverse(const uint8_t MOTOR_PORTS)
     {
-        motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
-        if(!motor_ptr)
-            return;
+        motor *motor_ptr = NULL;
+
+		MOTORS_CHECK_START()
         motor_ptr->set_duty_cycle_sp(-1 * motor_ptr->duty_cycle_sp());
         motor_ptr->run_forever();
+		MOTORS_CHECK_END()
     }
 
-    float Motor_get_speed(const char* motor_port)
+    float Motor_get_speed(const uint8_t MOTOR_PORT)
     {
 
-        motor *motor_ptr = get_motor_ptr( std::string(motor_port) );
-        if(!motor_ptr)
-            return 0;
+        motor *motor_ptr = get_motor_ptr(MOTOR_PORT);
 
         return 360 * (float)motor_ptr->speed() / (float)motor_ptr->count_per_rot();
 
     }
+
+	uint8_t Motor_get_is_overloaded( const uint8_t MOTOR_PORT )
+	{
+		motor *motor_ptr = get_motor_ptr(MOTOR_PORT);
+		return NULL;
+	}
 
     void SetPID(const char *motor_port, int p, int i, int d)
     {
@@ -163,6 +234,7 @@ extern "C"
         motor_ptr->set_ramp_down_sp(down);        
 
     }
+
 
 }
 
