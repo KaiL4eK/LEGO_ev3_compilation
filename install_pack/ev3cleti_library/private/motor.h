@@ -371,7 +371,7 @@ public:
   // This will also have the effect of stopping the motor.
   void reset() { set_command("reset"); }
 
-  bool getIsState(char*
+  //bool getIsState(char*
 
 protected:
   motor() {}
