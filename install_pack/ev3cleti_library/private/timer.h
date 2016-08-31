@@ -8,52 +8,52 @@ class timer
 {
 public:
 
-	timer(float timeScale);
-	~timer();
+    timer(float timeScale);
+    ~timer();
 
-	// Reset Timer
-	void Reset();
-	
-	// Update Timer
-	// Must be executed every cycle
-	void Tick();
-	
-	void Stop();
-	void Resume();
-	
-	// Change Timer Speed
-	// TimeScale = 1.f - default
-	void SetTimeScale(float timeScale) { this->Scale = timeScale; }
+    // Reset Timer
+    void Reset();
 
-	// Return Fraps(cycles) per second
-	int GetFPS(){ return FPS; }
-	// Return Pause Time
-	int32_t GetPauseTime();
-	// Return non-Pause Time
-	int32_t GetTotalTime() { return this->TotalTime; }
-	
-	void ComputeSecondsPerCount();
-	
-	float GetTimeScale() { return this->Scale; }
-	
-	//Return seconds in one cycle
-	int32_t GetDeltaTime() { return this->DeltaTime; }
-	
-	void ComputeCurrTime() { gettimeofday(&this->CurrTime,NULL); }
-	
-	//Return Time (Processor cycles) 
-	int32_t GetCurrTime() { return this->CurrTime.tv_sec; }
-	
-	bool GetIsStoped() { return this->IsInPause; }
+    // Update Timer
+    // Must be executed every cycle
+    void Tick();
 
-	float ThGetTime(uint8_t& command, float& time, bool& status);
+    void Stop();
+    void Resume();
+
+    // Change Timer Speed
+    // TimeScale = 1.f - default
+    void SetTimeScale(float timeScale) { this->Scale = timeScale; }
+
+    // Return Fraps(cycles) per second
+    int GetFPS(){ return FPS; }
+    // Return Pause Time
+    int32_t GetPauseTime();
+    // Return non-Pause Time
+    float GetTotalTime() { return this->TotalTime; }
+
+    void ComputeSecondsPerCount();
+
+    float GetTimeScale() { return this->Scale; }
+
+    //Return seconds in one cycle
+    float GetDeltaTime() { return this->DeltaTime; }
+
+    void ComputeCurrTime() { gettimeofday(&this->CurrTime,NULL); }
+
+    //Return Time (Processor cycles)
+    float GetCurrTime() { return this->CurrTime.tv_sec + this->CurrTime.tv_usec/1000000000; }
+
+    bool GetIsStoped() { return this->IsInPause; }
+
+    float ThGetTime(uint8_t& command, float& time, bool& status);
 
 
 private:
 
-	///////////////////////////////////
-	//**Processor Counts
-	///////////////////////////////////
+    ///////////////////////////////////
+    //**Processor Counts
+    ///////////////////////////////////
     // Current Time
     timeval CurrTime;
     // Previous Time
@@ -63,27 +63,26 @@ private:
     // Stop Time
     timeval StopTime;
     // In Pause Time
-    int32_t PauseTime;
+    float PauseTime;
     // In Previuos Pause Time
-    int32_t PrevPauseTime;
+    float PrevPauseTime;
 
-	///////////////////////////////////
-	//**Non-Processor Counts
-	///////////////////////////////////
-	int FPS;
-	
-	float Scale;
-	// non-Pause Time
-	int32_t TotalTime;
-	
-	int32_t DeltaTime;
+    ///////////////////////////////////
+    //**Non-Processor Counts
+    ///////////////////////////////////
+    int FPS;
+
+    float Scale;
+    // non-Pause Time
+    float TotalTime;
+
+    float DeltaTime;
 
 private:
 
-	int FrameCnt;
-	int32_t TimeElapsed;
+    int FrameCnt;
+    float TimeElapsed;
 
-	bool IsInPause;
+    bool IsInPause;
 };
-
 #endif //!TIMER_H
