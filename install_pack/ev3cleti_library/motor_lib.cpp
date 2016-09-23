@@ -30,26 +30,26 @@ char* get_motor_port(const uint8_t port)
 	{
 		case 0x1:
 		{
-			return "out1";
+			return "outA";
 		}
 		case 0x2:
 		{
-			return "out2";
+			return "outB";
 		}
 		case 0x4:
 		{
-			return "out3";
+			return "outC";
 		}
 		case 0x8:
 		{
-			return "out4";
+			return "outD";
 		}
 	}
 	return "";
 }
 
 #define MOTORS_CHECK_START_NO_PTR() \
-    for(int i = 1; i < 16; i*= 2)   \
+    for(int i = 1; i < 8; i*= 2)   \
     {                               \
         if(MOTOR_PORTS & i)         \
         {                           \
