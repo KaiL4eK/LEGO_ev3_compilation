@@ -205,20 +205,24 @@ int device::get_attr_int(const std::string &name) const {
 
   if (_path.empty())
     error_process ( "get_attr_int", "no device connected" );
+
+  static std::string Buffer;
+
   for(int attempt = 0; attempt < 2; ++attempt) {
     ifstream &is = ifstream_open(_path + name);
     if (is.is_open())
     {
       int result = 0;
       try {
-        is >> result;
-        printf("%d\n", result);
-        return result;
+
+        std::getline(is, Buffer);
+        return atoi(Buffer.c_str());
+		
       } catch(...) {
         // This could mean the sysfs attribute was recreated and the
         // corresponding file handle got stale. Lets close the file and try
         // again (once):
-        if (attempt != 0) error_process ( "get_attr_int", "bad value" );
+        if (attempt != 0) error_process ( "get_attr_int", "invalid value" );
 
         is.close();
         is.clear();

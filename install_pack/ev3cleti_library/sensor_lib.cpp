@@ -135,20 +135,33 @@ extern "C"
 
     color_sensor *CSensorPtr = get_sensor_ptr<color_sensor>(std::string(sensor_port));
 
-    //switch(COLOR_COMPONENT_)
-    //{
+    switch(COLOR_COMPONENT_)
+    {
 
-      //case COLOR_COMPONENT_RED:
+      case COLOR_COMPONENT_RED:
         return CSensorPtr->red();
-      //case COLOR_COMPONENT_GREEN:
-      //  return CSensorPtr->green();
-      //case COLOR_COMPONENT_BLUE:
-      //  return CSensorPtr->blue();
+      case COLOR_COMPONENT_GREEN:
+        return CSensorPtr->green();
+      case COLOR_COMPONENT_BLUE:
+        return CSensorPtr->blue();
 
-    //}
+    }
 
-    //return 0;
+    return 0;
 
+  }
+  
+  Color_s_components ColorSensor_get_color_RGB(const char* sensor_port)
+  {
+	  
+	 color_sensor *CSensorPtr = get_sensor_ptr<color_sensor>(std::string(sensor_port));
+	 Color_s_components Colors;
+	 Colors.red = CSensorPtr->red();
+	 Colors.green = CSensorPtr->green();
+	 Colors.blue = CSensorPtr->blue();
+	 
+	 return Colors;
+	  
   }
 
   uint8_t ColorSensor_detect_color(const char* sensor_port, Color_s_color_t color)

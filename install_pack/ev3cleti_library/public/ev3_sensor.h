@@ -17,6 +17,12 @@ typedef enum color_s_color_ {
    COLOR_BROWN = 7
 }Color_s_color_t;
 
+typedef struct color_s_components_{
+	int16_t red;
+	int16_t green;
+	int16_t blue;
+}Color_s_components;
+
 #define COLOR_COMPONENT_RED 0
 #define COLOR_COMPONENT_GREEN 1
 #define COLOR_COMPONENT_BLUE 2
@@ -45,6 +51,7 @@ Color_s_color_t ColorSensor_get_color ( const char *sensor_port );
 uint8_t ColorSensor_get_reflected_light(const char *sensor_port);
 uint8_t ColorSensor_get_ambient_light(const char* sensor_port);
 uint16_t ColorSensor_get_color_component(const char* sensor_port, uint8_t COLOR_COMPONENT_ );
+Color_s_components ColorSensor_get_color_RGB(const char* sensor_port);
 uint8_t ColorSensor_detect_color(const char* sensor_port, Color_s_color_t color);
 uint8_t ColorSensor_detect_color_RGB(const char* sensor_port, uint16_t red, uint16_t green, uint16_t blue, uint16_t error);
 ////////////////////////////////
