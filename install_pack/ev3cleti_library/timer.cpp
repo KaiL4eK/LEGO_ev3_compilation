@@ -126,14 +126,14 @@ extern "C"
 
     }
 
-    void Timer_sleep_until(int sec)
+    void Timer_sleep_until(float sec)
     {
 
         sleep(sec);
 
     }
 
-    short Timer_count_from(int sec, int* currSec)
+    short Timer_count_from(float sec, float* currSec)
     {
 
         if(!TempTimer)
