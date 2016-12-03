@@ -15,11 +15,12 @@ public_directory = public
 private_directory = private
 binary_directory = binary
 examples_directory = examples
+install_from_directory = install
 
 library_directory = $(cross_compiler_directory)/lib $(build_directory)
 include_directory = $(cross_compiler_directory)/include $(public_directory) $(private_directory)
 
-install_directory = $(ev3cleti_lib_directory)
+install_to_directory = $(ev3cleti_lib_directory)
 headers_install_directory = include
 library_install_directory = lib
 binary_install_directory = bin
@@ -47,12 +48,34 @@ cxxflags = $(cflags) -std=gnu++0x -D_GLIBCXX_USE_NANOSLEEP
 objects_library  = $(addprefix $(build_directory)/,$(patsubst %.cpp,%.o,$(wildcard *.cpp)))
 objects_library += $(addprefix $(build_directory)/,$(patsubst %.c,%.o,$(wildcard *.c)))
 
+# Main tasks
+
 all: $(build_directory) $(library_static_file)
+
+examples: all $(execute_files)
+
+install: all $(install_to_directory)
+	cp -r $(public_directory)/*    					$(install_to_directory)/$(headers_install_directory)/
+	cp -r $(library_static_file) 					$(install_to_directory)/$(library_install_directory)/
+	cp -r $(install_from_directory)/newProject.sh 	$(install_to_directory)/$(binary_install_directory)/
+	cp -r $(install_from_directory)/ev3cleti.mk 	$(install_to_directory)/
+	cp -r $(examples_directory)/*	 				$(install_to_directory)/$(examples_install_directory)/
+
+installapp: $(execute_link_file)
+
+installex: examples
+	$(foreach executable, $(execute_files), scp $(executable) robot@$(ip_robot_address):~/$(notdir $(executable));)
+
+clean:
+	rm -rf $(build_directory)
+
+distclean: clean
+	sudo rm -rf $(install_to_directory) $(execute_link_file)
+
+# Service tasks
 
 $(library_static_file): $(objects_library)
 	$(AR) rcs $@ $^
-
-examples: all $(execute_files)
 
 $(execute_files): $(example_sources)
 	$(CC) -o $@ $(examples_directory)/$(notdir $@.c) $(cflags) $(ldflags)
@@ -63,31 +86,14 @@ $(build_directory)/%.o: %.c
 $(build_directory)/%.o: %.cpp
 	$(CXX) -c -o $@ $< $(cxxflags)
 
-install: all $(install_directory)
-	cp -r $(public_directory)/*    $(install_directory)/$(headers_install_directory)/
-	cp -r $(library_static_file) $(install_directory)/$(library_install_directory)/
-	cp -r $(binary_directory)/*  $(install_directory)/$(binary_install_directory)/
-	cp -r $(examples_directory)/*	 $(install_directory)/$(examples_install_directory)/
-
-installapp: $(execute_link_file)
-
-$(execute_link_file):
-	sudo ln -snf $(install_directory)/$(binary_install_directory)/newProject.sh $(execute_link_file)
-
-installex: examples
-	$(foreach executable, $(execute_files), scp $(executable) robot@$(ip_robot_address):~/$(notdir $(executable));)
-
 $(build_directory):
 	mkdir -p $@
 
-$(install_directory):
+$(install_to_directory):
 	mkdir -p $@/$(library_install_directory)
 	mkdir -p $@/$(headers_install_directory)
 	mkdir -p $@/$(examples_install_directory)
 	mkdir -p $@/$(binary_install_directory)
 
-clean:
-	rm -rf $(build_directory)
-
-distclean: clean
-	sudo rm -rf $(install_directory) $(execute_link_file)
+$(execute_link_file):
+	sudo ln -snf $(install_to_directory)/$(binary_install_directory)/newProject.sh $(execute_link_file)
