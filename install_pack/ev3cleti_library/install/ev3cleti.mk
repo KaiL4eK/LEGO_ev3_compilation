@@ -1,13 +1,13 @@
-sources = $(ev3cleti_lib_directory)/main.c
-sources += $(wildcard *.c)
-
-objects = $(patsubst %.c,%.o,$(notdir $(sources)))
-
 cross_compiler_directory = /usr/arm-linux-gnueabi
 build_directory = build
 
 library_directory = $(cross_compiler_directory)/lib $(ev3cleti_lib_directory)/lib
 include_directory = $(cross_compiler_directory)/include $(ev3cleti_lib_directory)/include
+
+sources = $(ev3cleti_lib_directory)/main.c $(wildcard *.c)
+source_files = $(notdir $(sources))
+object_files = $(source_files:.c=.o)
+objects = $(addprefix $(build_directory)/, $(object_files))
 
 libraries_static = ev3cleti stdc++
 libraries_dynamic = pthread m
@@ -34,8 +34,8 @@ install: all
 
 # Service targets --------------------------------------------
 	
-$(execute_file): $(build_directory)/$(objects) 
-	$(LD) -o $@ $< $(ldflags)
+$(execute_file): $(objects) 
+	$(LD) -o $@ $^ $(ldflags)
 
 $(build_directory)/%.o : $(ev3cleti_lib_directory)/%.c
 	$(CC) $(cflags) -c $< -o $@

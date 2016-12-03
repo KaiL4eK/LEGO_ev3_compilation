@@ -7,7 +7,7 @@ read -d '' main_text <<"EOF"
 
 #include <ev3_core.h>
 
-int main ( void )
+int code ( void )
 {
 	// Here lay code =)
 
@@ -70,7 +70,7 @@ if [[ -z $robot_ip ]]; then
 fi
 echo "Robot ip: $robot_ip"
 
-echo "$main_text" > $project_directory/$project_name/main.c
+echo "$main_text" > $project_directory/$project_name/code.c
 makefile_text=${makefile_text/__ip_address/$robot_ip}
 makefile_text=${makefile_text/__project_name/$project_name}
 echo "$makefile_text" > $project_directory/$project_name/Makefile
