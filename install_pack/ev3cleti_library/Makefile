@@ -13,7 +13,6 @@ ev3cleti_lib_directory = $(HOME)/ev3cleti
 build_directory = build
 public_directory = public
 private_directory = private
-binary_directory = binary
 examples_directory = examples
 install_from_directory = install
 
