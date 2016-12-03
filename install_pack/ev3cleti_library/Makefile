@@ -48,7 +48,8 @@ cxxflags = $(cflags) -std=gnu++0x -D_GLIBCXX_USE_NANOSLEEP
 objects_library  = $(addprefix $(build_directory)/,$(patsubst %.cpp,%.o,$(wildcard *.cpp)))
 objects_library += $(addprefix $(build_directory)/,$(patsubst %.c,%.o,$(wildcard *.c)))
 
-# Main tasks
+
+# Main targets --------------------------------------------
 
 all: $(build_directory) $(library_static_file)
 
@@ -59,6 +60,7 @@ install: all $(install_to_directory)
 	cp -r $(library_static_file) 					$(install_to_directory)/$(library_install_directory)/
 	cp -r $(install_from_directory)/newProject.sh 	$(install_to_directory)/$(binary_install_directory)/
 	cp -r $(install_from_directory)/ev3cleti.mk 	$(install_to_directory)/
+	cp -r $(install_from_directory)/main.c 			$(install_to_directory)/
 	cp -r $(examples_directory)/*	 				$(install_to_directory)/$(examples_install_directory)/
 
 installapp: $(execute_link_file)
@@ -72,7 +74,8 @@ clean:
 distclean: clean
 	sudo rm -rf $(install_to_directory) $(execute_link_file)
 
-# Service tasks
+
+# Service targets --------------------------------------------
 
 $(library_static_file): $(objects_library)
 	$(AR) rcs $@ $^
