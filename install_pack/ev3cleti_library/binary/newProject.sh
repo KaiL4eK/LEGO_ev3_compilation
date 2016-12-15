@@ -6,13 +6,75 @@ read -d '' main_text <<"EOF"
 #include <unistd.h>
 
 #include <ev3_core.h>
+#include <pthread.h>
 
-int main ( void )
+#include <math.h>
+
+#include "Header.h"
+
+PINIT(); 
+
+void Setup()
 {
-	// Here lay code =)
 
-	return( 0 );
+
+
 }
+
+void Update(char* cmd)
+{
+
+
+
+
+}
+EOF
+
+read -d '' Header_text <<"EOF"
+
+void Update();
+void Setup();
+
+#define MAIN_LOOP_START()   				\
+	do {						\
+		ProtectOn();				\
+	if(*(char*)cmd == 1)				\
+            IsNeedQuit = 1; 				\
+        ProtectOff();					\
+    if(IsNeedQuit)					\
+        break;				
+
+#define MAIN_LOOP_END() }while(1);
+
+
+//So funny code, don't beat me
+#define PINIT() 					\
+uint8_t IsNeedQuit = 0;					\
+void Program(char* cmd)					\
+{MAIN_LOOP_START() Update(); MAIN_LOOP_END()}		\
+int main ( void )					\
+{							\
+	Setup();					\
+	char Cmd = 0;					\
+	InitThread();					\
+	CreateThread(Program, 0, &Cmd);			\
+	do 						\
+	{ 						\
+		if(Button_pressed(BUTTON_BACK))		\
+			break;				\
+	}while(1);					\
+	Cmd = 1;					\
+	JoinThread(0);					\
+	printf("Program has stopped\n");		\
+	Motor_stop_all();				\
+    Lcd_clear();					\
+    Lcd_release();					\
+	return( 0 );					\
+}												
+
+void Program(char* cmd);
+
+
 EOF
 
 read -d '' makefile_text <<"EOF"
@@ -106,4 +168,5 @@ echo "Robot ip: $robot_ip"
 echo "$main_text" > $project_directory/$project_name/main.c
 makefile_text=${makefile_text/__ip_address/$robot_ip}
 makefile_text=${makefile_text/__project_name/$project_name}
+echo "$Header_text" > $project_directory/$project_name/Header.h
 echo "$makefile_text" > $project_directory/$project_name/Makefile

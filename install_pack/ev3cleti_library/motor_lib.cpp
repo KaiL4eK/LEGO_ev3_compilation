@@ -49,7 +49,7 @@ char* get_motor_port(const uint8_t port)
 }
 
 #define MOTORS_CHECK_START_NO_PTR() \
-    for(int i = 1; i < 8; i*= 2)   \
+    for(int i = 1; i < 16; i*= 2)   \
     {                               \
         if(MOTOR_PORTS & i)         \
         {                           \
